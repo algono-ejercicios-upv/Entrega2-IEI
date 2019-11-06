@@ -7,6 +7,60 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="20" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="20" />
+        </Grid.ColumnDefinitions>
+        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="20" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="20" />
+        </Grid.RowDefinitions>
 
+        <TextBlock Grid.Column="1" Grid.Row="1" Text="Búsqueda de móviles" />
+
+        <Border Grid.Column="1" Grid.Row="3" BorderThickness="1" CornerRadius="2" BorderBrush="LightGray" Padding="5">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="20" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="20" />
+                </Grid.ColumnDefinitions>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="20" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="20" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="20" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="20" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="20" />
+                </Grid.RowDefinitions>
+
+                <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="1">
+                    <TextBlock Text="Marca" Margin="0 0 10 0" />
+                    <ComboBox x:Name="MarcaBox" MinWidth="100" />
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="3">
+                    <TextBlock Text="Modelo" Margin="0 0 10 0" />
+                    <TextBox x:Name="ModeloBox" MinWidth="100" />
+                </StackPanel>
+
+                <StackPanel Grid.Column="1" Grid.Row="5">
+                    <CheckBox x:Name="AmazonBox" Content="Amazon" />
+                    <CheckBox x:Name="PCComponentesBox" Content="PC Componentes" />
+                    <CheckBox x:Name="FnacBox" Content="Fnac" />
+                </StackPanel>
+
+                <Button x:Name="BuscarButton" Grid.Column="1" Grid.Row="7" HorizontalAlignment="Left" MinWidth="50" Content="Buscar" />
+            </Grid>
+        </Border>
     </Grid>
 </Window>
