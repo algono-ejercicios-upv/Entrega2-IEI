@@ -24,5 +24,12 @@ namespace Entrega2_IEI
         {
             InitializeComponent();
         }
+
+        private void BuscarButton_Click(object sender, RoutedEventArgs e)
+        {
+            BusquedaListBox.Items.Clear();
+            string movil = $"{MarcaBox.Text} {ModeloBox.Text}";
+            BusquedaListBox.Items.Add(movil);
+        }
     }
 }

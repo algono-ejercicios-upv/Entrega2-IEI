@@ -29,26 +29,38 @@
                     <ColumnDefinition Width="20" />
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="20" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="20" />
                 </Grid.ColumnDefinitions>
 
                 <Grid.RowDefinitions>
                     <RowDefinition Height="20" />
-                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="*" />
                     <RowDefinition Height="20" />
-                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="*" />
                     <RowDefinition Height="20" />
-                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="*" />
                     <RowDefinition Height="20" />
-                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="*" />
                     <RowDefinition Height="20" />
                 </Grid.RowDefinitions>
 
-                <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="1">
+                <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center">
                     <TextBlock Text="Marca" Margin="0 0 10 0" />
-                    <ComboBox x:Name="MarcaBox" MinWidth="100" />
+                    <ComboBox x:Name="MarcaBox" MinWidth="100">
+                        <ComboBoxItem>Samsung</ComboBoxItem>
+                        <ComboBoxItem>LG</ComboBoxItem>
+                        <ComboBoxItem>Sony</ComboBoxItem>
+                        <ComboBoxItem>Huawei</ComboBoxItem>
+                        <ComboBoxItem>Motorola</ComboBoxItem>
+                        <ComboBoxItem>Apple</ComboBoxItem>
+                        <ComboBoxItem>One Plus</ComboBoxItem>
+                        <ComboBoxItem>Lenovo</ComboBoxItem>
+                        <ComboBoxItem>Xiaomi</ComboBoxItem>
+                    </ComboBox>
                 </StackPanel>
 
-                <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="3">
+                <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="3" VerticalAlignment="Center">
                     <TextBlock Text="Modelo" Margin="0 0 10 0" />
                     <TextBox x:Name="ModeloBox" MinWidth="100" />
                 </StackPanel>
@@ -59,7 +71,9 @@
                     <CheckBox x:Name="FnacBox" Content="Fnac" />
                 </StackPanel>
 
-                <Button x:Name="BuscarButton" Grid.Column="1" Grid.Row="7" HorizontalAlignment="Left" MinWidth="50" Content="Buscar" />
+                <Button x:Name="BuscarButton" Grid.Column="1" Grid.Row="7" HorizontalAlignment="Left" MinWidth="50" VerticalAlignment="Center" Content="Buscar" Click="BuscarButton_Click" />
+
+                <ListBox x:Name="BusquedaListBox" Grid.Column="3" Grid.Row="1" Grid.RowSpan="7" />
             </Grid>
         </Border>
     </Grid>
