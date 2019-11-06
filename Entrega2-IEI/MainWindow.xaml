@@ -73,7 +73,7 @@
 
                 <Button x:Name="BuscarButton" Grid.Column="1" Grid.Row="7" HorizontalAlignment="Left" MinWidth="50" VerticalAlignment="Center" Content="Buscar" Click="BuscarButton_Click" />
 
-                <ListBox x:Name="BusquedaListBox" Grid.Column="3" Grid.Row="1" Grid.RowSpan="7" />
+                <ListBox x:Name="BusquedaListBox" Grid.Column="3" Grid.Row="1" Grid.RowSpan="7" DisplayMemberPath="Nombre" />
             </Grid>
         </Border>
     </Grid>

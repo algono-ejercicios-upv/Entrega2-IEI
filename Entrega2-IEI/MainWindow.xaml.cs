@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Entrega2_IEI.Library;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -28,7 +29,7 @@ namespace Entrega2_IEI
         private void BuscarButton_Click(object sender, RoutedEventArgs e)
         {
             BusquedaListBox.Items.Clear();
-            string movil = $"{MarcaBox.Text} {ModeloBox.Text}";
+            Movil movil = new Movil(MarcaBox.Text, ModeloBox.Text);
             BusquedaListBox.Items.Add(movil);
         }
     }
