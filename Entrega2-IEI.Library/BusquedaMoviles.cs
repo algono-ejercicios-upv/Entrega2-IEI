@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Entrega2_IEI.Library.Scrapers;
+using System.Collections.Generic;
 
 namespace Entrega2_IEI.Library
 {
