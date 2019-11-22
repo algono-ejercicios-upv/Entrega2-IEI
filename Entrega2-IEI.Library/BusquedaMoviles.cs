@@ -1,17 +1,11 @@
-﻿using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Collections.Generic;
 
 namespace Entrega2_IEI.Library
 {
     public static class BusquedaMoviles
     {
-        public static List<Movil> BuscarAmazon(String brand,String model)
-        {
-            return AmazonScraper.Setup(brand, model);
-        }
+        public static List<Movil> BuscarAmazon(string brand, string model)
+            => AmazonScraper.SearchPhone(brand, model);
 
         public static void BuscarPCComponentes()
         {
