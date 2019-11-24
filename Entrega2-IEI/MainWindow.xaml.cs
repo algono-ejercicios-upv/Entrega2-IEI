@@ -19,13 +19,13 @@ namespace Entrega2_IEI
         private void BuscarButton_Click(object sender, RoutedEventArgs e)
         {
             BusquedaListBox.Items.Clear();
-            List<Movil> mobiles;
-            if (AmazonBox.IsChecked==true)
+            List<Movil> phones;
+            if (AmazonBox.IsChecked ?? false)
             {
-                mobiles = BusquedaMoviles.BuscarAmazon(MarcaBox.Text,ModeloBox.Text);
-                foreach (Movil mobile in mobiles)
+                phones = BusquedaMoviles.BuscarAmazon(MarcaBox.Text, ModeloBox.Text);
+                foreach (Movil phone in phones)
                 {
-                    BusquedaListBox.Items.Add(mobile);
+                    BusquedaListBox.Items.Add(phone);
                 }
             }
             

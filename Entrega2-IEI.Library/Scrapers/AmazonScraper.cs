@@ -11,7 +11,7 @@ namespace Entrega2_IEI.Library.Scrapers
     {
         public const string Url = "https://www.amazon.es/";
 
-        public static List<Movil> SearchPhone(string brand,string product)
+        public static List<Movil> SearchPhone(string brand, string product)
         {
             List<Movil> mobiles = new List<Movil>();
             using (IWebDriver driver = ScraperUtils.SetupChromeDriver(Url))
