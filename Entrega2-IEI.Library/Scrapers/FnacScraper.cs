@@ -1,7 +1,6 @@
 ﻿using OpenQA.Selenium;
-using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 
 namespace Entrega2_IEI.Library.Scrapers
 {
@@ -18,7 +17,9 @@ namespace Entrega2_IEI.Library.Scrapers
             using (IWebDriver driver = ScraperUtils.SetupChromeDriver(Url))
             {
                 // TODO: Crear el web scraper para fnac
-                IWebElement phoneCategory = driver.FindElement(By.ClassName("CategoryNav js-CategoryNav")).FindElement(By.Name("Telefonía y Conectados"));
+                IWebElement categoryList = driver.FindElement(By.CssSelector(".CategoryNav"));
+                IReadOnlyCollection<IWebElement> categories = categoryList.FindElements(By.CssSelector(".CategoryNav-item"));
+                IWebElement phoneCategory = categories.FirstOrDefault(element => element.GetAttribute("content") == "Telefonía y Conectados");
                 phoneCategory.Click();
 
                 driver.Quit();

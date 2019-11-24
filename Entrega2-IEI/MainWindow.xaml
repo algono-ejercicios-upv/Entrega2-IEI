@@ -68,8 +68,8 @@
 
                 <StackPanel x:Name="ScraperBoxes" Grid.Column="1" Grid.Row="5">
                     <CheckBox x:Name="AmazonBox" Content="Amazon" Tag="{x:Type scrapers:AmazonScraper}" />
-                    <CheckBox x:Name="PCComponentesBox" Content="PC Componentes" Tag="{x:Type scrapers:FnacScraper}" />
-                    <CheckBox x:Name="FnacBox" Content="Fnac" Tag="{x:Type scrapers:PCComponentesScraper}" />
+                    <CheckBox x:Name="PCComponentesBox" Content="PC Componentes" Tag="{x:Type scrapers:PCComponentesScraper}" />
+                    <CheckBox x:Name="FnacBox" Content="Fnac" Tag="{x:Type scrapers:FnacScraper}" />
                 </StackPanel>
 
                 <Button x:Name="BuscarButton" Grid.Column="1" Grid.Row="7" HorizontalAlignment="Left" MinWidth="50" VerticalAlignment="Center" Content="Buscar" Click="BuscarButton_Click" />
