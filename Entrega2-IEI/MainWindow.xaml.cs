@@ -1,7 +1,10 @@
 ﻿using Entrega2_IEI.Library;
+using Entrega2_IEI.Library.Scrapers;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace Entrega2_IEI
 {
@@ -19,13 +22,33 @@ namespace Entrega2_IEI
         private void BuscarButton_Click(object sender, RoutedEventArgs e)
         {
             BusquedaListBox.Items.Clear();
-            List<Movil> phones;
-            if (AmazonBox.IsChecked ?? false)
+            foreach (CheckBox box in ScraperBoxes.Children)
             {
-                phones = BusquedaMoviles.BuscarAmazon(MarcaBox.Text, ModeloBox.Text);
-                foreach (Movil phone in phones)
+                if (box.IsChecked ?? false)
                 {
-                    BusquedaListBox.Items.Add(phone);
+                    if (box.Tag is Type type)
+                    {
+                        if (typeof(IPhoneScraper).IsAssignableFrom(type))
+                        {
+                            IPhoneScraper scraper = (IPhoneScraper)Activator.CreateInstance(box.Tag as Type);
+                            IList<Phone> phones = scraper.SearchPhone(MarcaBox.Text, ModeloBox.Text);
+                            foreach (Phone phone in phones)
+                            {
+                                BusquedaListBox.Items.Add(phone);
+                            }
+                        }
+                        else
+                        {
+                            throw new ArgumentOutOfRangeException(
+                                $"El objeto de la {nameof(CheckBox)} con contenido '{box.Content}' tiene un valor de un {nameof(Type)} " +
+                                $"que no implementa la interfaz {nameof(IPhoneScraper)}.");
+                        }
+                    }
+                    else
+                    {
+                        throw new ArgumentOutOfRangeException($"El objeto de la {nameof(CheckBox)} con contenido '{box.Content}' " +
+                            $"tiene un valor que no es de tipo {nameof(Type)}.");
+                    }
                 }
             }
             

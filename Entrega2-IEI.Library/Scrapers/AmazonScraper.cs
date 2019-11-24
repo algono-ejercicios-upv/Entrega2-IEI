@@ -7,13 +7,13 @@ namespace Entrega2_IEI.Library.Scrapers
     /// <summary>
     /// Author: Ignacio Ferrer
     /// </summary>
-    internal static class AmazonScraper
+    public class AmazonScraper : IPhoneScraper
     {
         public const string Url = "https://www.amazon.es/";
 
-        public static List<Movil> SearchPhone(string brand, string product)
+        public IList<Phone> SearchPhone(string brand, string product)
         {
-            List<Movil> mobiles = new List<Movil>();
+            List<Phone> phones = new List<Phone>();
             using (IWebDriver driver = ScraperUtils.SetupChromeDriver(Url))
             {
                 IWebElement searchBox = driver.FindElement(By.Id("twotabsearchtextbox"));
@@ -36,8 +36,8 @@ namespace Entrega2_IEI.Library.Scrapers
                         string precioTexto = element.FindElement(By.ClassName("a-price-whole")).Text;
                         double precio = ScraperUtils.ParseSpanishCulture(precioTexto);
 
-                        Movil movil = new Movil(marca: brand, modelo: modelo,
-                            precio: precio);
+                        Phone movil = new Phone(brand: brand, model: modelo,
+                            price: precio);
 
                         Debug.WriteLine("--------------------------");
                         Debug.WriteLine(element.FindElement(By.XPath(".//descendant::h2")).Text);
@@ -47,10 +47,10 @@ namespace Entrega2_IEI.Library.Scrapers
                         {
                             Debug.WriteLine("discount: " + element.FindElement(By.ClassName("a-text-price")).Text);
                             string discountText = element.FindElement(By.ClassName("a-text-price")).Text;
-                            movil.Descuento = double.Parse(discountText.Remove(discountText.Length - 1));
+                            movil.Discount = double.Parse(discountText.Remove(discountText.Length - 1));
                         }
                         Debug.WriteLine("--------------------------");
-                        mobiles.Add(movil);
+                        phones.Add(movil);
 
                     }
                 }
@@ -58,7 +58,7 @@ namespace Entrega2_IEI.Library.Scrapers
                 driver.Quit();
             }
 
-            return mobiles;
+            return phones;
         }
     }
 }

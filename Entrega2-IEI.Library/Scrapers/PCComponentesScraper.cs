@@ -8,13 +8,13 @@ namespace Entrega2_IEI.Library.Scrapers
     /// <summary>
     /// Author: Alejandro Tauste
     /// </summary>
-    internal static class PCComponentesScraper
+    public class PCComponentesScraper : IPhoneScraper
     {
         public const string Url = "https://www.pccomponentes.com/";
 
-        public static List<Movil> SearchPhone(string brand, string product)
+        public IList<Phone> SearchPhone(string brand, string product)
         {
-            List<Movil> phones = new List<Movil>();
+            List<Phone> phones = new List<Phone>();
             using (IWebDriver driver = ScraperUtils.SetupChromeDriver(Url))
             {
                 // TODO: Crear el web scraper para PCComponentes

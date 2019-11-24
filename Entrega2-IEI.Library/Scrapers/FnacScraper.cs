@@ -8,13 +8,13 @@ namespace Entrega2_IEI.Library.Scrapers
     /// <summary>
     /// Author: Alejandro Gómez
     /// </summary>
-    internal static class FnacScraper
+    public class FnacScraper : IPhoneScraper
     {
         public const string Url = "https://www.fnac.es/";
 
-        public static List<Movil> SearchPhone(string brand, string product)
+        public IList<Phone> SearchPhone(string brand, string product)
         {
-            List<Movil> phones = new List<Movil>();
+            List<Phone> phones = new List<Phone>();
             using (IWebDriver driver = ScraperUtils.SetupChromeDriver(Url))
             {
                 // TODO: Crear el web scraper para fnac
