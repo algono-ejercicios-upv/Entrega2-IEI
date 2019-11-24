@@ -1,6 +1,7 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using System;
+using System.Globalization;
 using System.Linq;
 
 namespace Entrega2_IEI.Library
@@ -44,5 +45,8 @@ namespace Entrega2_IEI.Library
 
             return driver;
         }
+
+        public static bool ContainsIgnoreCase(this string source, string value)
+            => CultureInfo.CurrentCulture.CompareInfo.IndexOf(source, value, CompareOptions.IgnoreCase) >= 0;
     }
 }

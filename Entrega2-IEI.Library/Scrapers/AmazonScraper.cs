@@ -29,10 +29,11 @@ namespace Entrega2_IEI.Library.Scrapers
 
                 foreach (IWebElement element in listaElementos)
                 {
+                    string modelo = element.FindElement(By.XPath(".//descendant::h2")).Text;
                     //Filter of Patrocinados and product's name
-                    if (!ScraperUtils.ListFilter(element.Text) && element.FindElement(By.XPath(".//descendant::h2")).Text.Contains(product))
+                    if (!ScraperUtils.ListFilter(element.Text) && modelo.ContainsIgnoreCase(product))
                     {
-                        Movil movil = new Movil(marca: brand, modelo: element.FindElement(By.XPath(".//descendant::h2")).Text,
+                        Movil movil = new Movil(marca: brand, modelo: modelo,
                             precio: double.Parse(element.FindElement(By.ClassName("a-price-whole")).Text));
 
                         Debug.WriteLine("--------------------------");
