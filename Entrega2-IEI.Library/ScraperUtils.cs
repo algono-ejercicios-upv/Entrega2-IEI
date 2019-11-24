@@ -48,5 +48,7 @@ namespace Entrega2_IEI.Library
 
         public static bool ContainsIgnoreCase(this string source, string value)
             => CultureInfo.CurrentCulture.CompareInfo.IndexOf(source, value, CompareOptions.IgnoreCase) >= 0;
+
+        public static double ParseSpanishCulture(string source) => double.Parse(source, CultureInfo.CurrentCulture);
     }
 }

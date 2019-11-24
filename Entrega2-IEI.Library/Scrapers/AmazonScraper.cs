@@ -33,8 +33,11 @@ namespace Entrega2_IEI.Library.Scrapers
                     //Filter of Patrocinados and product's name
                     if (!ScraperUtils.ListFilter(element.Text) && modelo.ContainsIgnoreCase(product))
                     {
+                        string precioTexto = element.FindElement(By.ClassName("a-price-whole")).Text;
+                        double precio = ScraperUtils.ParseSpanishCulture(precioTexto);
+
                         Movil movil = new Movil(marca: brand, modelo: modelo,
-                            precio: double.Parse(element.FindElement(By.ClassName("a-price-whole")).Text));
+                            precio: precio);
 
                         Debug.WriteLine("--------------------------");
                         Debug.WriteLine(element.FindElement(By.XPath(".//descendant::h2")).Text);

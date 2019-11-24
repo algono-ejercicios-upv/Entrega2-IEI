@@ -18,6 +18,8 @@ namespace Entrega2_IEI.Library.Scrapers
             using (IWebDriver driver = ScraperUtils.SetupChromeDriver(Url))
             {
                 // TODO: Crear el web scraper para fnac
+                IWebElement phoneCategory = driver.FindElement(By.ClassName("CategoryNav js-CategoryNav")).FindElement(By.Name("Telefonía y Conectados"));
+                phoneCategory.Click();
 
                 driver.Quit();
             }
