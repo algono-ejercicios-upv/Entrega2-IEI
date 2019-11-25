@@ -1,7 +1,6 @@
 ﻿using OpenQA.Selenium;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 
 namespace Entrega2_IEI.Library.Scrapers
 {
@@ -12,7 +11,7 @@ namespace Entrega2_IEI.Library.Scrapers
     {
         public const string Url = "https://www.fnac.es/";
 
-        private const string CategoryCssSelector = ".CategoryNav-link", SubCategoryCssSelector = ".categoryMenu-link",
+        private const string 
             SearchInputCssSelector = ".Header__search-input", SearchSubmitCssSelector = ".Header__search-submit",
             ArticleItemCssSelector = ".Article-item", ArticleDescriptionCssSelector = ".Article-desc",
             ArticleOldPriceCssSelector = ".oldPrice", ArticlePriceCssSelector = ".userPrice";
@@ -99,16 +98,5 @@ namespace Entrega2_IEI.Library.Scrapers
         }
 
         private static IReadOnlyCollection<IWebElement> GetArticleItemList(IWebDriver driver) => driver.FindElements(By.CssSelector(ArticleItemCssSelector));
-
-        private static void GoToCategory(IWebDriver driver, string text) => ClickOnItemFromList(driver, CategoryCssSelector, text);
-
-        private static void GoToSubCategory(IWebDriver driver, string text) => ClickOnItemFromList(driver, SubCategoryCssSelector, text);
-
-        private static void ClickOnItemFromList(IWebDriver driver, string listCssSelector, string text)
-        {
-            IReadOnlyCollection<IWebElement> list = driver.FindElements(By.CssSelector(listCssSelector));
-            IWebElement item = list.FirstOrDefault(element => element.Text == text);
-            item.Click();
-        }
     }
 }
