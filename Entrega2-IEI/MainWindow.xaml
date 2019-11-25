@@ -27,54 +27,60 @@
         <Border Grid.Column="1" Grid.Row="3" BorderThickness="1" CornerRadius="2" BorderBrush="LightGray" Padding="5">
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="20" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="20" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="20" />
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="20"/>
+                    <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="20" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="20" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="20" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="20" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="20" />
-                </Grid.RowDefinitions>
+                <Grid Grid.Column="0" VerticalAlignment="Center">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="20" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="20" />
+                    </Grid.ColumnDefinitions>
 
-                <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center">
-                    <TextBlock Text="Marca" Margin="0 0 10 0" />
-                    <ComboBox x:Name="MarcaBox" MinWidth="100">
-                        <ComboBoxItem>Samsung</ComboBoxItem>
-                        <ComboBoxItem>LG</ComboBoxItem>
-                        <ComboBoxItem>Sony</ComboBoxItem>
-                        <ComboBoxItem>Huawei</ComboBoxItem>
-                        <ComboBoxItem>Motorola</ComboBoxItem>
-                        <ComboBoxItem>Apple</ComboBoxItem>
-                        <ComboBoxItem>One Plus</ComboBoxItem>
-                        <ComboBoxItem>Lenovo</ComboBoxItem>
-                        <ComboBoxItem>Xiaomi</ComboBoxItem>
-                    </ComboBox>
-                </StackPanel>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="20" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="20" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="20" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="20" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="20" />
+                    </Grid.RowDefinitions>
 
-                <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="3" VerticalAlignment="Center">
-                    <TextBlock Text="Modelo" Margin="0 0 10 0" />
-                    <TextBox x:Name="ModeloBox" MinWidth="100" />
-                </StackPanel>
+                    <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center">
+                        <TextBlock Text="Marca" Margin="0 0 10 0" />
+                        <ComboBox x:Name="MarcaBox" MinWidth="100">
+                            <ComboBoxItem>Samsung</ComboBoxItem>
+                            <ComboBoxItem>LG</ComboBoxItem>
+                            <ComboBoxItem>Sony</ComboBoxItem>
+                            <ComboBoxItem>Huawei</ComboBoxItem>
+                            <ComboBoxItem>Motorola</ComboBoxItem>
+                            <ComboBoxItem>Apple</ComboBoxItem>
+                            <ComboBoxItem>One Plus</ComboBoxItem>
+                            <ComboBoxItem>Lenovo</ComboBoxItem>
+                            <ComboBoxItem>Xiaomi</ComboBoxItem>
+                        </ComboBox>
+                    </StackPanel>
 
-                <StackPanel x:Name="ScraperBoxes" Grid.Column="1" Grid.Row="5">
-                    <CheckBox x:Name="AmazonBox" Content="Amazon" Tag="{x:Type scrapers:AmazonScraper}" />
-                    <CheckBox x:Name="PCComponentesBox" Content="PC Componentes" Tag="{x:Type scrapers:PCComponentesScraper}" />
-                    <CheckBox x:Name="FnacBox" Content="Fnac" Tag="{x:Type scrapers:FnacScraper}" />
-                </StackPanel>
+                    <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="3" VerticalAlignment="Center">
+                        <TextBlock Text="Modelo" Margin="0 0 10 0" />
+                        <TextBox x:Name="ModeloBox" MinWidth="100" />
+                    </StackPanel>
 
-                <Button x:Name="BuscarButton" Grid.Column="1" Grid.Row="7" HorizontalAlignment="Left" MinWidth="50" VerticalAlignment="Center" Content="Buscar" Click="BuscarButton_Click" />
+                    <StackPanel x:Name="ScraperBoxes" Grid.Column="1" Grid.Row="5">
+                        <CheckBox x:Name="AmazonBox" Content="Amazon" Tag="{x:Type scrapers:AmazonScraper}" />
+                        <CheckBox x:Name="PCComponentesBox" Content="PC Componentes" Tag="{x:Type scrapers:PCComponentesScraper}" />
+                        <CheckBox x:Name="FnacBox" Content="Fnac" Tag="{x:Type scrapers:FnacScraper}" />
+                    </StackPanel>
 
-                <ListBox x:Name="BusquedaListBox" Grid.Column="3" Grid.Row="1" Grid.RowSpan="7" />
+                    <Button x:Name="BuscarButton" Grid.Column="1" Grid.Row="7" HorizontalAlignment="Left" MinWidth="50" VerticalAlignment="Center" Content="Buscar" Click="BuscarButton_Click" />
+                </Grid>
+
+                <ListBox x:Name="BusquedaListBox" Grid.Column="2" />
             </Grid>
         </Border>
     </Grid>
