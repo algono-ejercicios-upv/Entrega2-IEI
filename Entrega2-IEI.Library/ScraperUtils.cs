@@ -8,6 +8,8 @@ namespace Entrega2_IEI.Library
 {
     internal static class ScraperUtils
     {
+        public static string Currency => CultureInfo.CurrentCulture.NumberFormat.CurrencySymbol;
+
         /// <summary>
         /// Check if an element exists, if not throws an exception.
         /// </summary>

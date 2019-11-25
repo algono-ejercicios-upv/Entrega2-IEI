@@ -10,8 +10,6 @@ namespace Entrega2_IEI.Library.Scrapers
     public class AmazonScraper : IPhoneScraper
     {
         public const string Url = "https://www.amazon.es/";
-        
-        private const string DefaultCurrency = "€";
 
         public IList<Phone> SearchPhone(string brand, string product)
         {
@@ -39,11 +37,11 @@ namespace Entrega2_IEI.Library.Scrapers
                         double precio = ScraperUtils.ParseSpanishCulture(precioTexto);
 
                         Phone movil = new Phone(brand: brand, model: modelo,
-                            price: precio, currency: DefaultCurrency);
+                            price: precio);
 
                         Debug.WriteLine("--------------------------");
                         Debug.WriteLine(element.FindElement(By.XPath(".//descendant::h2")).Text);
-                        Debug.WriteLine(element.FindElement(By.ClassName("a-price-whole")).Text + DefaultCurrency);
+                        Debug.WriteLine(element.FindElement(By.ClassName("a-price-whole")).Text + ScraperUtils.Currency);
 
                         if (ScraperUtils.IsElementPresent(element, By.ClassName("a-text-price")))
                         {
