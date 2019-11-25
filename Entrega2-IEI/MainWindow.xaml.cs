@@ -34,7 +34,7 @@ namespace Entrega2_IEI
                         if (typeof(IPhoneScraper).IsAssignableFrom(type))
                         {
                             IPhoneScraper scraper = (IPhoneScraper)Activator.CreateInstance(box.Tag as Type);
-                            BusquedaListBox.Items.Add($"--------- {scraper.GetType().Name} ----------");
+                            BusquedaListBox.Items.Add($"--------- {box.Content} ----------");
                             
                             IList<Phone> phones = scraper.SearchPhone(brand, model);
 
@@ -60,7 +60,11 @@ namespace Entrega2_IEI
 
             if (BusquedaListBox.Items.Count > 0)
             {
-                BusquedaListBox.Items.Add("---------------------------------------------");
+                const string separator = "---------------------------------------------";
+                BusquedaListBox.Items.Insert(0, separator);
+                BusquedaListBox.Items.Insert(0, "Resultados de la búsqueda:");
+
+                BusquedaListBox.Items.Add(separator);
             }
         }
     }
