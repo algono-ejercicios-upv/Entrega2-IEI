@@ -6,7 +6,7 @@
         public string Model { get; set; }
 
         internal PhoneNameFormat NameFormat { get; set; }
-        public string Name => $"{Brand} {Model} - {PriceFormat(Price)} - {PriceFormat(Discount)}";
+        public string Name => $"{GetFormattedName()} - {PriceFormat(Price)} - {PriceFormat(Discount)}";
 
         public double Price { get; set; }
         public double Discount { get; set; }
@@ -23,6 +23,15 @@
 
             Description = description;
             NameFormat = description == null ? PhoneNameFormat.BrandModel : PhoneNameFormat.Description;
+        }
+
+        private string GetFormattedName()
+        {
+            switch (NameFormat)
+            {
+                case PhoneNameFormat.Description: return Description;
+                default: return $"{Brand} {Model}";
+            }
         }
 
         private static string PriceFormat(double price) => string.Format("{0:C2}", price); 
