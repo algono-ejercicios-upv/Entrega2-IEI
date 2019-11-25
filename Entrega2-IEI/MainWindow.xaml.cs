@@ -21,6 +21,8 @@ namespace Entrega2_IEI
 
         private void BuscarButton_Click(object sender, RoutedEventArgs e)
         {
+            SetBuscando(true);
+
             BusquedaListBox.Items.Clear();
 
             string brand = MarcaBox.Text, model = ModeloBox.Text;
@@ -35,7 +37,7 @@ namespace Entrega2_IEI
                         {
                             IPhoneScraper scraper = (IPhoneScraper)Activator.CreateInstance(box.Tag as Type);
                             BusquedaListBox.Items.Add($"--------- {box.Content} ----------");
-                            
+
                             IList<Phone> phones = scraper.SearchPhone(brand, model);
 
                             foreach (Phone phone in phones)
@@ -66,6 +68,14 @@ namespace Entrega2_IEI
 
                 BusquedaListBox.Items.Add(separator);
             }
+
+            SetBuscando(false);
+        }
+
+        private void SetBuscando(bool buscando)
+        {
+            BuscarButton.IsEnabled = !buscando;
+            BuscandoText.Visibility = buscando ? Visibility.Visible : Visibility.Hidden;
         }
     }
 }

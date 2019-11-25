@@ -49,6 +49,8 @@
                         <RowDefinition Height="20" />
                         <RowDefinition Height="auto" />
                         <RowDefinition Height="20" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="20" />
                     </Grid.RowDefinitions>
 
                     <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center">
@@ -78,6 +80,7 @@
                     </StackPanel>
 
                     <Button x:Name="BuscarButton" Grid.Column="1" Grid.Row="7" HorizontalAlignment="Left" MinWidth="50" VerticalAlignment="Center" Content="Buscar" Click="BuscarButton_Click" />
+                    <TextBlock x:Name="BuscandoText" Text="Buscando..." Foreground="LightGray" Visibility="Hidden" />
                 </Grid>
 
                 <ListBox x:Name="BusquedaListBox" Grid.Column="2" />
