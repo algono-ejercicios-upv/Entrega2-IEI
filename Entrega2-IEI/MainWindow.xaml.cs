@@ -1,6 +1,7 @@
 ﻿using Entrega2_IEI.Library;
 using Entrega2_IEI.Library.Scrapers;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Threading.Tasks;
@@ -24,14 +25,14 @@ namespace Entrega2_IEI
         {
             SetBuscando(true);
 
-            IList<object> resultados = new List<object>();
+            IList resultados = null;
             string brand = MarcaBox.Text, model = ModeloBox.Text;
 
-            UIElementCollection checkboxes = ScraperBoxes.Children;
+            IList<IPhoneScraper> scrapers = ObtenerScrapers();
 
             await Task.Run(() =>
             {
-                resultados = Buscar(brand, model, ObtenerScrapers(checkboxes));
+                resultados = Buscar(brand, model, scrapers);
             });
 
             BusquedaListBox.ItemsSource = resultados;
@@ -39,11 +40,11 @@ namespace Entrega2_IEI
             SetBuscando(false);
         }
 
-        private IList<IPhoneScraper> ObtenerScrapers(UIElementCollection checkboxes)
+        private IList<IPhoneScraper> ObtenerScrapers()
         {
             IList<IPhoneScraper> scrapers = new List<IPhoneScraper>();
 
-            foreach (CheckBox box in checkboxes)
+            foreach (CheckBox box in ScraperBoxes.Children)
             {
                 if (box.IsChecked ?? false)
                 {
@@ -72,9 +73,9 @@ namespace Entrega2_IEI
             return scrapers;
         }
 
-        private IList<object> Buscar(string brand, string model, IEnumerable<IPhoneScraper> scrapers)
+        private IList Buscar(string brand, string model, IEnumerable<IPhoneScraper> scrapers)
         {
-            IList<object> resultados = new List<object>();
+            IList resultados = new List<object>();
 
             foreach (IPhoneScraper scraper in scrapers)
             {
