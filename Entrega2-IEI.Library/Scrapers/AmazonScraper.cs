@@ -11,6 +11,8 @@ namespace Entrega2_IEI.Library.Scrapers
     {
         public const string Url = "https://www.amazon.es/";
 
+        public void GoToUrl(IWebDriver driver) => driver.Navigate().GoToUrl(Url);
+
         public IList<Phone> SearchPhone(string brand, string product)
         {
             IList<Phone> phones;

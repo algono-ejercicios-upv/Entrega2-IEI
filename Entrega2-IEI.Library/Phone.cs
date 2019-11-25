@@ -51,6 +51,7 @@ namespace Entrega2_IEI.Library
                 {
                     foreach (IPhoneScraper scraper in scrapers)
                     {
+                        scraper.GoToUrl(driver);
                         IList<Phone> phones = scraper.SearchPhone(driver, brand, model);
                         handler.Invoke(scraper, phones);
                     }

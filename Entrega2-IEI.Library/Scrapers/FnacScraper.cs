@@ -16,6 +16,8 @@ namespace Entrega2_IEI.Library.Scrapers
             ArticleItemCssSelector = ".Article-item", ArticleDescriptionCssSelector = ".Article-desc",
             ArticleOldPriceCssSelector = ".oldPrice", ArticlePriceCssSelector = ".userPrice";
 
+        public void GoToUrl(IWebDriver driver) => driver.Navigate().GoToUrl(Url);
+
         public IList<Phone> SearchPhone(string brand, string model)
         {
             IList<Phone> phones;

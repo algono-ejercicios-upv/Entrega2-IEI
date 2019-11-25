@@ -1,7 +1,6 @@
 ﻿using OpenQA.Selenium;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Entrega2_IEI.Library.Scrapers
 {
@@ -11,6 +10,8 @@ namespace Entrega2_IEI.Library.Scrapers
     public class PCComponentesScraper : IPhoneScraper
     {
         public const string Url = "https://www.pccomponentes.com/";
+
+        public void GoToUrl(IWebDriver driver) => driver.Navigate().GoToUrl(Url);
 
         public IList<Phone> SearchPhone(string brand, string model)
         {
