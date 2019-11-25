@@ -23,16 +23,22 @@ namespace Entrega2_IEI
         private async void BuscarButton_Click(object sender, RoutedEventArgs e)
         {
             SetBuscando(true);
+
+            IList<object> resultados = new List<object>();
             
-            await Task.Run(() => Buscar(BusquedaListBox.Items));
+            await Task.Run(() =>
+            {
+                resultados = Buscar();
+            });
+
+            BusquedaListBox.ItemsSource = resultados;
 
             SetBuscando(false);
         }
 
-        private void Buscar(ItemCollection items)
+        private IList<object> Buscar()
         {
-            items.Clear();
-
+            IList<object> resultados = new List<object>();
             string brand = MarcaBox.Text, model = ModeloBox.Text;
 
             foreach (CheckBox box in ScraperBoxes.Children)
@@ -44,13 +50,13 @@ namespace Entrega2_IEI
                         if (typeof(IPhoneScraper).IsAssignableFrom(type))
                         {
                             IPhoneScraper scraper = (IPhoneScraper)Activator.CreateInstance(box.Tag as Type);
-                            items.Add($"--------- {box.Content} ----------");
+                            resultados.Add($"--------- {box.Content} ----------");
 
                             IList<Phone> phones = scraper.SearchPhone(brand, model);
 
                             foreach (Phone phone in phones)
                             {
-                                items.Add(phone);
+                                resultados.Add(phone);
                             }
                         }
                         else
@@ -68,14 +74,16 @@ namespace Entrega2_IEI
                 }
             }
 
-            if (items.Count > 0)
+            if (resultados.Count > 0)
             {
                 const string separator = "---------------------------------------------";
-                items.Insert(0, separator);
-                items.Insert(0, "Resultados de la búsqueda:");
+                resultados.Insert(0, separator);
+                resultados.Insert(0, "Resultados de la búsqueda:");
 
-                items.Add(separator);
+                resultados.Add(separator);
             }
+
+            return resultados;
         }
 
         private void SetBuscando(bool buscando)
