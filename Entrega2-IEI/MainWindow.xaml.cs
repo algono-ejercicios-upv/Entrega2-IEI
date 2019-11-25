@@ -29,7 +29,7 @@ namespace Entrega2_IEI
 
             await Task.Run(() =>
             {
-                resultados = Buscar(brand, model);
+                resultados = Buscar(brand, model, ObtenerScrapers(ScraperBoxes.Children));
             });
 
             BusquedaListBox.ItemsSource = resultados;
@@ -37,9 +37,9 @@ namespace Entrega2_IEI
             SetBuscando(false);
         }
 
-        private IList<object> Buscar(string brand, string model)
+        private IList<IPhoneScraper> ObtenerScrapers(UIElementCollection checkboxes)
         {
-            IList<object> resultados = new List<object>();
+            IList<IPhoneScraper> scrapers = new List<IPhoneScraper>();
 
             foreach (CheckBox box in ScraperBoxes.Children)
             {
@@ -50,14 +50,7 @@ namespace Entrega2_IEI
                         if (typeof(IPhoneScraper).IsAssignableFrom(type))
                         {
                             IPhoneScraper scraper = (IPhoneScraper)Activator.CreateInstance(box.Tag as Type);
-                            resultados.Add($"--------- {box.Content} ----------");
-
-                            IList<Phone> phones = scraper.SearchPhone(brand, model);
-
-                            foreach (Phone phone in phones)
-                            {
-                                resultados.Add(phone);
-                            }
+                            scrapers.Add(scraper);
                         }
                         else
                         {
@@ -71,6 +64,30 @@ namespace Entrega2_IEI
                         throw new ArgumentOutOfRangeException($"El objeto de la {nameof(CheckBox)} con contenido '{box.Content}' " +
                             $"tiene un valor que no es de tipo {nameof(Type)}.");
                     }
+                }
+            }
+
+            return scrapers;
+        }
+
+        private IList<object> Buscar(string brand, string model, IEnumerable<IPhoneScraper> scrapers)
+        {
+            IList<object> resultados = new List<object>();
+
+            foreach (IPhoneScraper scraper in scrapers)
+            {
+                // Chapuza hasta poder hacerlo de una forma mejor
+                // TODO: Mejorar esto
+                string webPageName = scrapers.GetType().Name;
+                webPageName = webPageName.Remove(webPageName.Length - "Scraper".Length);
+
+                resultados.Add($"--------- {webPageName} ----------");
+
+                IList<Phone> phones = scraper.SearchPhone(brand, model);
+
+                foreach (Phone phone in phones)
+                {
+                    resultados.Add(phone);
                 }
             }
 
