@@ -27,9 +27,11 @@ namespace Entrega2_IEI
             IList<object> resultados = new List<object>();
             string brand = MarcaBox.Text, model = ModeloBox.Text;
 
+            UIElementCollection checkboxes = ScraperBoxes.Children;
+
             await Task.Run(() =>
             {
-                resultados = Buscar(brand, model, ObtenerScrapers(ScraperBoxes.Children));
+                resultados = Buscar(brand, model, ObtenerScrapers(checkboxes));
             });
 
             BusquedaListBox.ItemsSource = resultados;
