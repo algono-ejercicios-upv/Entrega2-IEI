@@ -25,10 +25,11 @@ namespace Entrega2_IEI
             SetBuscando(true);
 
             IList<object> resultados = new List<object>();
-            
+            string brand = MarcaBox.Text, model = ModeloBox.Text;
+
             await Task.Run(() =>
             {
-                resultados = Buscar();
+                resultados = Buscar(brand, model);
             });
 
             BusquedaListBox.ItemsSource = resultados;
@@ -36,10 +37,9 @@ namespace Entrega2_IEI
             SetBuscando(false);
         }
 
-        private IList<object> Buscar()
+        private IList<object> Buscar(string brand, string model)
         {
             IList<object> resultados = new List<object>();
-            string brand = MarcaBox.Text, model = ModeloBox.Text;
 
             foreach (CheckBox box in ScraperBoxes.Children)
             {
