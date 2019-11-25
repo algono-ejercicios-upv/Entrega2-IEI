@@ -11,7 +11,7 @@ namespace Entrega2_IEI.Library.Scrapers
     {
         public const string Url = "https://www.amazon.es/";
 
-        private const string PriceClassName = "a-text-price", PriceWithoutDiscountClassName = "a-price-whole";
+        private const string PriceClassName = "a-price-whole", PriceWithoutDiscountClassName = "a-text-price";
 
         public void GoToUrl(IWebDriver driver) => driver.Navigate().GoToUrl(Url);
 
@@ -50,7 +50,11 @@ namespace Entrega2_IEI.Library.Scrapers
                     if (ScraperUtils.IsArticleValid(element.Text) && description.ContainsIgnoreCase(model))
                     {
                         IWebElement priceElement = element.FindElement(By.ClassName(PriceClassName));
+
                         string priceText = priceElement.Text;
+
+                        priceText = priceText.Remove(priceText.Length - 1);
+
                         double price = ScraperUtils.ParseSpanishCulture(priceText);
 
                         Phone phone = new Phone(brand, model, description, price);
@@ -66,7 +70,9 @@ namespace Entrega2_IEI.Library.Scrapers
                             string priceWithoutDiscountText = priceWithoutDiscountElement.Text;
                             Debug.WriteLine("discount: " + priceWithoutDiscountText);
 
-                            double priceWithoutDiscount = ScraperUtils.ParseSpanishCulture(priceWithoutDiscountText.Remove(priceWithoutDiscountText.Length - 1));
+                            priceWithoutDiscountText = priceWithoutDiscountText.Remove(priceWithoutDiscountText.Length - 1);
+
+                            double priceWithoutDiscount = ScraperUtils.ParseSpanishCulture(priceWithoutDiscountText);
 
                             phone.Discount = priceWithoutDiscount - price;
                         }
