@@ -6,7 +6,7 @@
         public string Model { get; set; }
 
         internal PhoneNameFormat NameFormat { get; set; }
-        public string Name => $"{GetFormattedName()} - {PriceFormat(Price)} - {PriceFormat(Discount)}";
+        public string Name => $"{GetFormattedName()} - {PriceFormat(Price)}{GetFormattedDiscount()}";
 
         public double Price { get; set; }
         public double Discount { get; set; }
@@ -33,6 +33,8 @@
                 default: return $"{Brand} {Model}";
             }
         }
+
+        private string GetFormattedDiscount() => Discount == 0.0 ? "" : $" - { PriceFormat(Discount)}";
 
         public override string ToString() => Name;
 
