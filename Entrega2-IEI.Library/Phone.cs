@@ -13,7 +13,7 @@
 
         public string Description { get; set; }
 
-        public Phone(string brand, string model, double price = default, double discount = default, string description = default)
+        internal Phone(string brand, string model, double price = default, double discount = default, string description = default)
         {
             Brand = brand;
             Model = model;
