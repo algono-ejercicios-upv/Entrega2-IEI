@@ -81,7 +81,7 @@ namespace Entrega2_IEI
             {
                 // Chapuza hasta poder hacerlo de una forma mejor
                 // TODO: Mejorar esto
-                string webPageName = scrapers.GetType().Name;
+                string webPageName = scraper.GetType().Name;
                 webPageName = webPageName.Remove(webPageName.Length - "Scraper".Length);
 
                 resultados.Add($"--------- {webPageName} ----------");
