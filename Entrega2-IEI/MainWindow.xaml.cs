@@ -3,6 +3,7 @@ using Entrega2_IEI.Library.Scrapers;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -19,10 +20,17 @@ namespace Entrega2_IEI
             CultureInfo.CurrentCulture = new CultureInfo("es-ES");
         }
 
-        private void BuscarButton_Click(object sender, RoutedEventArgs e)
+        private async void BuscarButton_Click(object sender, RoutedEventArgs e)
         {
             SetBuscando(true);
+            
+            await Task.Run(Buscar);
 
+            SetBuscando(false);
+        }
+
+        private void Buscar()
+        {
             BusquedaListBox.Items.Clear();
 
             string brand = MarcaBox.Text, model = ModeloBox.Text;
@@ -68,8 +76,6 @@ namespace Entrega2_IEI
 
                 BusquedaListBox.Items.Add(separator);
             }
-
-            SetBuscando(false);
         }
 
         private void SetBuscando(bool buscando)
