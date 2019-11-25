@@ -50,7 +50,7 @@ namespace Entrega2_IEI.Library.Scrapers
                         IWebElement priceElement = articleItem.FindElement(By.CssSelector(ArticlePriceCssSelector));
                         double price = ParsePrice(priceElement.Text, out string priceText, out string _);
 
-                        Phone phone = new Phone(brand, model, price);
+                        Phone phone = new Phone(brand, model, description, price);
 
                         try
                         {

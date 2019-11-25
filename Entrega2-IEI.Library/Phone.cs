@@ -13,7 +13,18 @@
 
         public string Description { get; set; }
 
-        internal Phone(string brand, string model, double price = default, double discount = default, string description = default)
+        internal Phone(string brand, string model, double price = default, double discount = default)
+        {
+            Brand = brand;
+            Model = model;
+
+            Price = price;
+            Discount = discount;
+
+            NameFormat = PhoneNameFormat.BrandModel;
+        }
+
+        internal Phone(string brand, string model, string description, double price = default, double discount = default)
         {
             Brand = brand;
             Model = model;
@@ -22,7 +33,7 @@
             Discount = discount;
 
             Description = description;
-            NameFormat = description == null ? PhoneNameFormat.BrandModel : PhoneNameFormat.Description;
+            NameFormat = PhoneNameFormat.Description;
         }
 
         private string GetFormattedName()

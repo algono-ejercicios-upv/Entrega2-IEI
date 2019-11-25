@@ -13,43 +13,42 @@ namespace Entrega2_IEI.Library.Scrapers
 
         public void GoToUrl(IWebDriver driver) => driver.Navigate().GoToUrl(Url);
 
-        public IList<Phone> SearchPhone(string brand, string product)
+        public IList<Phone> SearchPhone(string brand, string model)
         {
             IList<Phone> phones;
             using (IWebDriver driver = ScraperUtils.SetupChromeDriver(Url))
             {
-                phones = SearchPhone(driver, brand, product);
+                phones = SearchPhone(driver, brand, model);
             }
 
             return phones;
         }
 
-        public IList<Phone> SearchPhone(IWebDriver driver, string brand, string product)
+        public IList<Phone> SearchPhone(IWebDriver driver, string brand, string model)
         {
             List<Phone> phones = new List<Phone>();
 
             IWebElement searchBox = driver.FindElement(By.Id("twotabsearchtextbox"));
 
-            searchBox.SendKeys("smartphone " + brand + " " + product);
+            searchBox.SendKeys("smartphone " + brand + " " + model);
 
             driver.FindElement(By.ClassName("nav-input")).Click();
 
-            IList<IWebElement> listaElementos =
+            IList<IWebElement> elementList =
                 driver.FindElements(By.XPath("//*[contains(@data-cel-widget, 'search_result')]"));
 
-            Debug.WriteLine("Number of elements: " + listaElementos.Count);
+            Debug.WriteLine("Number of elements: " + elementList.Count);
 
-            foreach (IWebElement element in listaElementos)
+            foreach (IWebElement element in elementList)
             {
-                string modelo = element.FindElement(By.XPath(".//descendant::h2")).Text;
+                string description = element.FindElement(By.XPath(".//descendant::h2")).Text;
                 // Filter of Patrocinados and product's name
-                if (ScraperUtils.IsArticleValid(element.Text) && modelo.ContainsIgnoreCase(product))
+                if (ScraperUtils.IsArticleValid(element.Text) && description.ContainsIgnoreCase(model))
                 {
-                    string precioTexto = element.FindElement(By.ClassName("a-price-whole")).Text;
-                    double precio = ScraperUtils.ParseSpanishCulture(precioTexto);
+                    string priceText = element.FindElement(By.ClassName("a-price-whole")).Text;
+                    double price = ScraperUtils.ParseSpanishCulture(priceText);
 
-                    Phone movil = new Phone(brand: brand, model: modelo,
-                        price: precio);
+                    Phone phone = new Phone(brand, model, description, price);
 
                     Debug.WriteLine("--------------------------");
                     Debug.WriteLine(element.FindElement(By.XPath(".//descendant::h2")).Text);
@@ -59,10 +58,10 @@ namespace Entrega2_IEI.Library.Scrapers
                     {
                         Debug.WriteLine("discount: " + element.FindElement(By.ClassName("a-text-price")).Text);
                         string discountText = element.FindElement(By.ClassName("a-text-price")).Text;
-                        movil.Discount = double.Parse(discountText.Remove(discountText.Length - 1));
+                        phone.Discount = double.Parse(discountText.Remove(discountText.Length - 1));
                     }
                     Debug.WriteLine("--------------------------");
-                    phones.Add(movil);
+                    phones.Add(phone);
 
                 }
             }
