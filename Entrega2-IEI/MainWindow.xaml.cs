@@ -23,7 +23,8 @@ namespace Entrega2_IEI
         {
             BusquedaListBox.Items.Clear();
 
-            List<IPhoneScraper> scrapers = new List<IPhoneScraper>();
+            string brand = MarcaBox.Text, model = ModeloBox.Text;
+
             foreach (CheckBox box in ScraperBoxes.Children)
             {
                 if (box.IsChecked ?? false)
@@ -33,7 +34,14 @@ namespace Entrega2_IEI
                         if (typeof(IPhoneScraper).IsAssignableFrom(type))
                         {
                             IPhoneScraper scraper = (IPhoneScraper)Activator.CreateInstance(box.Tag as Type);
-                            scrapers.Add(scraper);
+                            BusquedaListBox.Items.Add($"--------- {scraper.GetType().Name} ----------");
+                            
+                            IList<Phone> phones = scraper.SearchPhone(brand, model);
+
+                            foreach (Phone phone in phones)
+                            {
+                                BusquedaListBox.Items.Add(phone);
+                            }
                         }
                         else
                         {
@@ -50,24 +58,10 @@ namespace Entrega2_IEI
                 }
             }
 
-            if (scrapers.Count > 0)
+            if (BusquedaListBox.Items.Count > 0)
             {
-                Phone.SearchPhoneInMultipleScrapers(MarcaBox.Text, ModeloBox.Text, (scraper, phones) =>
-                {
-                    BusquedaListBox.Items.Add($"--------- {scraper.GetType().Name} ----------");
-
-                    foreach (Phone phone in phones)
-                    {
-                        BusquedaListBox.Items.Add(phone);
-                    }
-                }, scrapers);
-
-                if (BusquedaListBox.Items.Count > 0)
-                {
-                    BusquedaListBox.Items.Add("---------------------------------------------");
-                }
+                BusquedaListBox.Items.Add("---------------------------------------------");
             }
-            
         }
     }
 }
