@@ -43,7 +43,7 @@ namespace Entrega2_IEI
         {
             IList<IPhoneScraper> scrapers = new List<IPhoneScraper>();
 
-            foreach (CheckBox box in ScraperBoxes.Children)
+            foreach (CheckBox box in checkboxes)
             {
                 if (box.IsChecked ?? false)
                 {
