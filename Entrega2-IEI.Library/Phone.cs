@@ -36,6 +36,6 @@
 
         public override string ToString() => Name;
 
-        private static string PriceFormat(double price) => string.Format("{0:C2}", price);
+        public static string PriceFormat(object price) => string.Format("{0:C2}", price);
     }
 }

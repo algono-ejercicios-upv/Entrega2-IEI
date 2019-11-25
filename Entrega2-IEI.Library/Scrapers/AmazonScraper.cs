@@ -53,7 +53,7 @@ namespace Entrega2_IEI.Library.Scrapers
 
                     Debug.WriteLine("--------------------------");
                     Debug.WriteLine(element.FindElement(By.XPath(".//descendant::h2")).Text);
-                    Debug.WriteLine(element.FindElement(By.ClassName("a-price-whole")).Text + ScraperUtils.Currency);
+                    Debug.WriteLine(Phone.PriceFormat(element.FindElement(By.ClassName("a-price-whole")).Text));
 
                     if (ScraperUtils.IsElementPresent(element, By.ClassName("a-text-price")))
                     {
