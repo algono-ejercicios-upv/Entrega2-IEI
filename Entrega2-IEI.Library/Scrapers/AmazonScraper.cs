@@ -11,6 +11,8 @@ namespace Entrega2_IEI.Library.Scrapers
     {
         public const string Url = "https://www.amazon.es/";
 
+        private const string PriceClassName = "a-text-price", PriceWithoutDiscountClassName = "a-price-whole";
+
         public void GoToUrl(IWebDriver driver) => driver.Navigate().GoToUrl(Url);
 
         public IList<Phone> SearchPhone(string brand, string model)
@@ -41,28 +43,45 @@ namespace Entrega2_IEI.Library.Scrapers
 
             foreach (IWebElement element in elementList)
             {
-                string description = element.FindElement(By.XPath(".//descendant::h2")).Text;
-                // Filter of Patrocinados and product's name
-                if (ScraperUtils.IsArticleValid(element.Text) && description.ContainsIgnoreCase(model))
+                try
                 {
-                    string priceText = element.FindElement(By.ClassName("a-price-whole")).Text;
-                    double price = ScraperUtils.ParseSpanishCulture(priceText);
-
-                    Phone phone = new Phone(brand, model, description, price);
-
-                    Debug.WriteLine("--------------------------");
-                    Debug.WriteLine(element.FindElement(By.XPath(".//descendant::h2")).Text);
-                    Debug.WriteLine(Phone.PriceFormat(element.FindElement(By.ClassName("a-price-whole")).Text));
-
-                    if (ScraperUtils.IsElementPresent(element, By.ClassName("a-text-price")))
+                    string description = element.FindElement(By.XPath(".//descendant::h2")).Text;
+                    // Filter of Patrocinados and product's name
+                    if (ScraperUtils.IsArticleValid(element.Text) && description.ContainsIgnoreCase(model))
                     {
-                        Debug.WriteLine("discount: " + element.FindElement(By.ClassName("a-text-price")).Text);
-                        string discountText = element.FindElement(By.ClassName("a-text-price")).Text;
-                        phone.Discount = double.Parse(discountText.Remove(discountText.Length - 1));
-                    }
-                    Debug.WriteLine("--------------------------");
-                    phones.Add(phone);
+                        IWebElement priceElement = element.FindElement(By.ClassName(PriceClassName));
+                        string priceText = priceElement.Text;
+                        double price = ScraperUtils.ParseSpanishCulture(priceText);
 
+                        Phone phone = new Phone(brand, model, description, price);
+
+                        Debug.WriteLine("--------------------------");
+                        Debug.WriteLine(description);
+                        Debug.WriteLine(Phone.PriceFormat(priceText));
+
+                        try
+                        {
+                            IWebElement priceWithoutDiscountElement = element.FindElement(By.ClassName(PriceWithoutDiscountClassName));
+                            
+                            string priceWithoutDiscountText = priceWithoutDiscountElement.Text;
+                            Debug.WriteLine("discount: " + priceWithoutDiscountText);
+
+                            double priceWithoutDiscount = ScraperUtils.ParseSpanishCulture(priceWithoutDiscountText.Remove(priceWithoutDiscountText.Length - 1));
+
+                            phone.Discount = priceWithoutDiscount - price;
+                        }
+                        catch (NoSuchElementException ex)
+                        {
+                            Debug.WriteLine("No discount: " + ex.Message);
+                        }
+
+                        Debug.WriteLine("--------------------------");
+                        phones.Add(phone);
+                    }
+                }
+                catch (NoSuchElementException ex)
+                {
+                    Debug.WriteLine("Skipping article: " + ex.Message);
                 }
             }
 

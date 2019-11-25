@@ -1,5 +1,4 @@
-﻿using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
+﻿using OpenQA.Selenium.Chrome;
 using System;
 using System.Globalization;
 using System.Linq;
@@ -9,25 +8,6 @@ namespace Entrega2_IEI.Library
     internal static class ScraperUtils
     {
         public static string Currency => CultureInfo.CurrentCulture.NumberFormat.CurrencySymbol;
-
-        /// <summary>
-        /// Check if an element exists, if not throws an exception.
-        /// </summary>
-        /// <param name="webElement"></param>
-        /// <param name="element"></param>
-        /// <returns></returns>
-        public static bool IsElementPresent(IWebElement webElement, By element)
-        {
-            try
-            {
-                webElement.FindElement(element);
-                return true;
-            }
-            catch (NoSuchElementException)
-            {
-                return false;
-            }
-        }
 
         private static readonly string[] filter = new[] { "Patrocinado", "Protector", "Silicona", "Funda", "Batería" };
 

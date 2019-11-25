@@ -59,9 +59,10 @@ namespace Entrega2_IEI.Library.Scrapers
 
                             phone.Discount = oldPrice - price;
                         }
-                        catch (NoSuchElementException)
+                        catch (NoSuchElementException ex)
                         {
                             // No hagas nada, simplemente no hay descuento
+                            Debug.WriteLine("No discount: " + ex.Message);
                         }
 
                         // Como en FNAC la descripción también contiene la marca y el modelo, mostramos sólo la descripción
@@ -73,7 +74,7 @@ namespace Entrega2_IEI.Library.Scrapers
                 }
                 catch (NoSuchElementException ex)
                 {
-                    Debug.WriteLine(ex.Message);
+                    Debug.WriteLine("Skipping article: " + ex.Message);
                 }
             }
 
