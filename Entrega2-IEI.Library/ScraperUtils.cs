@@ -38,12 +38,14 @@ namespace Entrega2_IEI.Library
         /// <returns></returns>
         public static bool IsArticleValid(string s) => !filter.Any(x => s.ContainsIgnoreCase(x));
 
-        public static ChromeDriver SetupChromeDriver(string startUrl)
+        public static ChromeDriver SetupChromeDriver(string startUrl = default)
         {
             ChromeDriver driver = new ChromeDriver();
+
             driver.Manage().Window.Maximize();
             driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(2);
-            driver.Navigate().GoToUrl(startUrl);
+
+            if (startUrl != default) driver.Navigate().GoToUrl(startUrl);
 
             return driver;
         }

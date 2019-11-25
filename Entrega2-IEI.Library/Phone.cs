@@ -1,4 +1,9 @@
-﻿namespace Entrega2_IEI.Library
+﻿using Entrega2_IEI.Library.Scrapers;
+using OpenQA.Selenium;
+using System;
+using System.Collections.Generic;
+
+namespace Entrega2_IEI.Library
 {
     public class Phone
     {
@@ -34,6 +39,23 @@
             }
         }
 
-        private static string PriceFormat(double price) => string.Format("{0:C2}", price); 
+        public override string ToString() => Name;
+
+        private static string PriceFormat(double price) => string.Format("{0:C2}", price);
+        
+        public static void SearchPhoneInMultipleScrapers(string brand, string model, Action<IPhoneScraper, IList<Phone>> handler, ICollection<IPhoneScraper> scrapers)
+        {
+            if (handler != null && scrapers.Count > 0)
+            {
+                using (IWebDriver driver = ScraperUtils.SetupChromeDriver())
+                {
+                    foreach (IPhoneScraper scraper in scrapers)
+                    {
+                        IList<Phone> phones = scraper.SearchPhone(driver, brand, model);
+                        handler.Invoke(scraper, phones);
+                    }
+                }
+            }
+        }
     }
 }

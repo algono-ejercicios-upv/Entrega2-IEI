@@ -22,6 +22,8 @@ namespace Entrega2_IEI
         private void BuscarButton_Click(object sender, RoutedEventArgs e)
         {
             BusquedaListBox.Items.Clear();
+
+            List<IPhoneScraper> scrapers = new List<IPhoneScraper>();
             foreach (CheckBox box in ScraperBoxes.Children)
             {
                 if (box.IsChecked ?? false)
@@ -31,11 +33,7 @@ namespace Entrega2_IEI
                         if (typeof(IPhoneScraper).IsAssignableFrom(type))
                         {
                             IPhoneScraper scraper = (IPhoneScraper)Activator.CreateInstance(box.Tag as Type);
-                            IList<Phone> phones = scraper.SearchPhone(MarcaBox.Text, ModeloBox.Text);
-                            foreach (Phone phone in phones)
-                            {
-                                BusquedaListBox.Items.Add(phone);
-                            }
+                            scrapers.Add(scraper);
                         }
                         else
                         {
@@ -49,6 +47,24 @@ namespace Entrega2_IEI
                         throw new ArgumentOutOfRangeException($"El objeto de la {nameof(CheckBox)} con contenido '{box.Content}' " +
                             $"tiene un valor que no es de tipo {nameof(Type)}.");
                     }
+                }
+            }
+
+            if (scrapers.Count > 0)
+            {
+                Phone.SearchPhoneInMultipleScrapers(MarcaBox.Text, ModeloBox.Text, (scraper, phones) =>
+                {
+                    BusquedaListBox.Items.Add($"--------- {scraper.GetType().Name} ----------");
+
+                    foreach (Phone phone in phones)
+                    {
+                        BusquedaListBox.Items.Add(phone);
+                    }
+                }, scrapers);
+
+                if (BusquedaListBox.Items.Count > 0)
+                {
+                    BusquedaListBox.Items.Add("---------------------------------------------");
                 }
             }
             

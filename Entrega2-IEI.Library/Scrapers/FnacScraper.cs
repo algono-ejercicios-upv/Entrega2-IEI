@@ -19,55 +19,64 @@ namespace Entrega2_IEI.Library.Scrapers
 
         public IList<Phone> SearchPhone(string brand, string model)
         {
-            List<Phone> phones = new List<Phone>();
+            IList<Phone> phones;
             using (IWebDriver driver = ScraperUtils.SetupChromeDriver(Url))
-            {               
-                Search(driver, $"Smartphone {brand} {model}");
+            {
+                phones = SearchPhone(driver, brand, model);
+            }
 
-                // TODO: Extraer datos de los resultados de busqueda
-                IReadOnlyCollection<IWebElement> articleItemList = GetArticleItemList(driver);
+            return phones;
+        }
 
-                foreach (IWebElement articleItem in articleItemList)
+        public IList<Phone> SearchPhone(IWebDriver driver, string brand, string model)
+        {
+            List<Phone> phones = new List<Phone>();
+
+            Search(driver, $"Smartphone {brand} {model}");
+
+            // TODO: Extraer datos de los resultados de busqueda
+            IReadOnlyCollection<IWebElement> articleItemList = GetArticleItemList(driver);
+
+            foreach (IWebElement articleItem in articleItemList)
+            {
+                try
                 {
-                    try
-                    {
-                        IWebElement descriptionElement = articleItem.FindElement(By.CssSelector(ArticleDescriptionCssSelector));
-                        string description = descriptionElement.FindElement(By.XPath(".//descendant::a")).Text;
+                    IWebElement descriptionElement = articleItem.FindElement(By.CssSelector(ArticleDescriptionCssSelector));
+                    string description = descriptionElement.FindElement(By.XPath(".//descendant::a")).Text;
 
-                        if (ScraperUtils.IsArticleValid(description) && description.ContainsIgnoreCase(model))
+                    if (ScraperUtils.IsArticleValid(description) && description.ContainsIgnoreCase(model))
+                    {
+                        IWebElement priceElement = articleItem.FindElement(By.CssSelector(ArticlePriceCssSelector));
+                        double price = ParsePrice(priceElement.Text, out string priceText, out string _);
+
+                        Phone phone = new Phone(brand, model, price);
+
+                        try
                         {
-                            IWebElement priceElement = articleItem.FindElement(By.CssSelector(ArticlePriceCssSelector));
-                            double price = ParsePrice(priceElement.Text, out string priceText, out string _);
+                            IWebElement oldPriceElement = articleItem.FindElement(By.CssSelector(ArticleOldPriceCssSelector));
+                            double oldPrice = ParsePrice(oldPriceElement.Text, out string oldPriceText, out string _);
 
-                            Phone phone = new Phone(brand, model, price);
-
-                            try
-                            {
-                                IWebElement oldPriceElement = articleItem.FindElement(By.CssSelector(ArticleOldPriceCssSelector));
-                                double oldPrice = ParsePrice(oldPriceElement.Text, out string oldPriceText, out string _);
-
-                                phone.Discount = oldPrice - price;
-                            }
-                            catch (NoSuchElementException)
-                            {
-                                // No hagas nada, simplemente no hay descuento
-                            }
-
-                            // Como en FNAC la descripción también contiene la marca y el modelo, mostramos sólo la descripción
-                            phone.Description = description;
-                            phone.NameFormat = PhoneNameFormat.Description;
-
-                            phones.Add(phone); 
+                            phone.Discount = oldPrice - price;
                         }
-                    }
-                    catch (NoSuchElementException ex)
-                    {
-                        Debug.WriteLine(ex.Message);
+                        catch (NoSuchElementException)
+                        {
+                            // No hagas nada, simplemente no hay descuento
+                        }
+
+                        // Como en FNAC la descripción también contiene la marca y el modelo, mostramos sólo la descripción
+                        phone.Description = description;
+                        phone.NameFormat = PhoneNameFormat.Description;
+
+                        phones.Add(phone);
                     }
                 }
-
-                driver.Quit();
+                catch (NoSuchElementException ex)
+                {
+                    Debug.WriteLine(ex.Message);
+                }
             }
+
+            driver.Quit();
 
             return phones;
         }
