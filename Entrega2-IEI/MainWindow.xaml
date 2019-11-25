@@ -77,7 +77,10 @@
                         <CheckBox x:Name="FnacBox" Content="Fnac" Tag="{x:Type scrapers:FnacScraper}" />
                     </StackPanel>
 
-                    <Button x:Name="BuscarButton" Grid.Column="1" Grid.Row="7" HorizontalAlignment="Left" MinWidth="50" VerticalAlignment="Center" Content="Buscar" Click="BuscarButton_Click" />
+                    <StackPanel Grid.Column="1" Grid.Row="7" Orientation="Horizontal">
+                        <Button x:Name="BuscarButton" HorizontalAlignment="Left" MinWidth="50" VerticalAlignment="Center" Content="Buscar" Click="BuscarButton_Click" />
+                        <TextBlock x:Name="BuscandoText" Text="Buscando..." Foreground="Gray" Margin="10 0 0 0" Visibility="Hidden" />
+                    </StackPanel>
                 </Grid>
 
                 <ListBox x:Name="BusquedaListBox" Grid.Column="2" />
