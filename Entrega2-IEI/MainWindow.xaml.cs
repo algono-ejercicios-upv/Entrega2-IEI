@@ -24,14 +24,14 @@ namespace Entrega2_IEI
         {
             SetBuscando(true);
             
-            await Task.Run(Buscar);
+            await Task.Run(() => Buscar(BusquedaListBox.Items));
 
             SetBuscando(false);
         }
 
-        private void Buscar()
+        private void Buscar(ItemCollection items)
         {
-            BusquedaListBox.Items.Clear();
+            items.Clear();
 
             string brand = MarcaBox.Text, model = ModeloBox.Text;
 
@@ -44,13 +44,13 @@ namespace Entrega2_IEI
                         if (typeof(IPhoneScraper).IsAssignableFrom(type))
                         {
                             IPhoneScraper scraper = (IPhoneScraper)Activator.CreateInstance(box.Tag as Type);
-                            BusquedaListBox.Items.Add($"--------- {box.Content} ----------");
+                            items.Add($"--------- {box.Content} ----------");
 
                             IList<Phone> phones = scraper.SearchPhone(brand, model);
 
                             foreach (Phone phone in phones)
                             {
-                                BusquedaListBox.Items.Add(phone);
+                                items.Add(phone);
                             }
                         }
                         else
@@ -68,13 +68,13 @@ namespace Entrega2_IEI
                 }
             }
 
-            if (BusquedaListBox.Items.Count > 0)
+            if (items.Count > 0)
             {
                 const string separator = "---------------------------------------------";
-                BusquedaListBox.Items.Insert(0, separator);
-                BusquedaListBox.Items.Insert(0, "Resultados de la búsqueda:");
+                items.Insert(0, separator);
+                items.Insert(0, "Resultados de la búsqueda:");
 
-                BusquedaListBox.Items.Add(separator);
+                items.Add(separator);
             }
         }
 
