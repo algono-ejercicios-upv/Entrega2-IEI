@@ -27,14 +27,14 @@ namespace Entrega2_IEI.Library
             }
         }
 
-        private static readonly string[] filter = new[] { "Patrocinado", "Más opciones de compra", "Funda", "Batería" };
+        private static readonly string[] filter = new[] { "Patrocinado", "Protector", "Silicona", "Funda", "Batería" };
 
         /// <summary>
         /// Check if it's a recommended product or isn't a smartphone
         /// </summary>
         /// <param name="s"></param>
         /// <returns></returns>
-        public static bool ListFilter(string s) => filter.Any(x => s.Contains(x));
+        public static bool IsArticleValid(string s) => !filter.Any(x => s.ContainsIgnoreCase(x));
 
         public static ChromeDriver SetupChromeDriver(string startUrl)
         {

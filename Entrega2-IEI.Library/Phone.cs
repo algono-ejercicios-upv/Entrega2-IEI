@@ -5,7 +5,7 @@
         public string Brand { get; set; }
         public string Model { get; set; }
 
-        public string Name => $"{Brand} {Model} - {Price} EUR - {Discount} EUR";
+        public string Name => $"{Brand} {Model} - {Price} {Currency} - {Discount} {Currency}";
 
         public double Price { get; set; }
         public string Currency { get; set; }
