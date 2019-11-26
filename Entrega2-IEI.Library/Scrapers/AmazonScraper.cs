@@ -7,26 +7,15 @@ namespace Entrega2_IEI.Library.Scrapers
     /// <summary>
     /// Author: Ignacio Ferrer
     /// </summary>
-    public class AmazonScraper : IPhoneScraper
+    public class AmazonScraper : PhoneScraper
     {
-        public const string Url = "https://www.amazon.es/";
+        public const string AmazonUrl = "https://www.amazon.es/";
+
+        public override string Url => AmazonUrl;
 
         private const string PriceClassName = "a-price-whole", PriceWithoutDiscountClassName = "a-text-price";
 
-        public void GoToUrl(IWebDriver driver) => driver.Navigate().GoToUrl(Url);
-
-        public IEnumerable<Phone> SearchPhone(string brand, string model)
-        {
-            using (IWebDriver driver = ScraperUtils.SetupChromeDriver(Url))
-            {
-                foreach (Phone phone in SearchPhone(driver, brand, model))
-                {
-                    yield return phone;
-                }
-            }
-        }
-
-        public IEnumerable<Phone> SearchPhone(IWebDriver driver, string brand, string model)
+        public override IEnumerable<Phone> SearchPhone(IWebDriver driver, string brand, string model)
         {
             IWebElement searchBox = driver.FindElement(By.Id("twotabsearchtextbox"));
 

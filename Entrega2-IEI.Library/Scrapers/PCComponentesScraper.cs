@@ -7,24 +7,13 @@ namespace Entrega2_IEI.Library.Scrapers
     /// <summary>
     /// Author: Alejandro Tauste
     /// </summary>
-    public class PCComponentesScraper : IPhoneScraper
+    public class PCComponentesScraper : PhoneScraper
     {
-        public const string Url = "https://www.pccomponentes.com/";
+        public const string PCComponentesUrl = "https://www.pccomponentes.com/";
 
-        public void GoToUrl(IWebDriver driver) => driver.Navigate().GoToUrl(Url);
+        public override string Url => PCComponentesUrl;
 
-        public IEnumerable<Phone> SearchPhone(string brand, string model)
-        {
-            using (IWebDriver driver = ScraperUtils.SetupChromeDriver(Url))
-            {
-                foreach (Phone phone in SearchPhone(driver, brand, model))
-                {
-                    yield return phone;
-                }
-            }
-        }
-
-        public IEnumerable<Phone> SearchPhone(IWebDriver driver, string brand, string model)
+        public override IEnumerable<Phone> SearchPhone(IWebDriver driver, string brand, string model)
         {
             // Descomentar las líneas de código cuando vayas a escribir el código (y quites la NotImplementedException)
 

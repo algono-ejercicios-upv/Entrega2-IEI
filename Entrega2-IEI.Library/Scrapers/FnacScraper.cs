@@ -7,29 +7,18 @@ namespace Entrega2_IEI.Library.Scrapers
     /// <summary>
     /// Author: Alejandro Gómez
     /// </summary>
-    public class FnacScraper : IPhoneScraper
+    public class FnacScraper : PhoneScraper
     {
-        public const string Url = "https://www.fnac.es/";
+        public const string FnacUrl = "https://www.fnac.es/";
+
+        public override string Url => FnacUrl;
 
         private const string 
             SearchInputCssSelector = ".Header__search-input", SearchSubmitCssSelector = ".Header__search-submit",
             ArticleItemCssSelector = ".Article-item", ArticleDescriptionCssSelector = ".Article-desc",
             ArticleOldPriceCssSelector = ".oldPrice", ArticlePriceCssSelector = ".userPrice";
 
-        public void GoToUrl(IWebDriver driver) => driver.Navigate().GoToUrl(Url);
-
-        public IEnumerable<Phone> SearchPhone(string brand, string model)
-        {
-            using (IWebDriver driver = ScraperUtils.SetupChromeDriver(Url))
-            {
-                foreach (Phone phone in SearchPhone(driver, brand, model))
-                {
-                    yield return phone;
-                }
-            }
-        }
-
-        public IEnumerable<Phone> SearchPhone(IWebDriver driver, string brand, string model)
+        public override IEnumerable<Phone> SearchPhone(IWebDriver driver, string brand, string model)
         {
             Search(driver, $"Smartphone {brand} {model}");
 
