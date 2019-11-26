@@ -22,7 +22,10 @@ namespace Entrega2_IEI.Library.Scrapers
         {
             using (IWebDriver driver = ScraperUtils.SetupChromeDriver(Url))
             {
-                return SearchPhone(driver, brand, model);
+                foreach (Phone phone in SearchPhone(driver, brand, model))
+                {
+                    yield return phone;
+                }
             }
         }
 
