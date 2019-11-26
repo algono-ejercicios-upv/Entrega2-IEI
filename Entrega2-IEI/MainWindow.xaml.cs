@@ -3,6 +3,7 @@ using Entrega2_IEI.Library.Scrapers;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Globalization;
 using System.Threading.Tasks;
 using System.Windows;
@@ -25,17 +26,17 @@ namespace Entrega2_IEI
         {
             SetBuscando(true);
 
-            IList resultados = null;
+            IList<object> resultados = new BindingList<object>();
             string brand = MarcaBox.Text, model = ModeloBox.Text;
 
             IList<IPhoneScraper> scrapers = ObtenerScrapers();
 
+            BusquedaListBox.ItemsSource = resultados;
+
             await Task.Run(() =>
             {
-                resultados = Buscar(brand, model, scrapers);
+                Buscar(brand, model, scrapers, resultados);
             });
-
-            BusquedaListBox.ItemsSource = resultados;
 
             SetBuscando(false);
         }
@@ -73,10 +74,8 @@ namespace Entrega2_IEI
             return scrapers;
         }
 
-        private IList Buscar(string brand, string model, IEnumerable<IPhoneScraper> scrapers)
+        private void Buscar(string brand, string model, IEnumerable<IPhoneScraper> scrapers, IList<object> resultados)
         {
-            IList resultados = new List<object>();
-
             foreach (IPhoneScraper scraper in scrapers)
             {
                 // Chapuza hasta poder hacerlo de una forma mejor
@@ -86,9 +85,7 @@ namespace Entrega2_IEI
 
                 resultados.Add($"--------- {webPageName} ----------");
 
-                IList<Phone> phones = scraper.SearchPhone(brand, model);
-
-                foreach (Phone phone in phones)
+                foreach (Phone phone in scraper.SearchPhone(brand, model))
                 {
                     resultados.Add(phone);
                 }
@@ -102,8 +99,6 @@ namespace Entrega2_IEI
 
                 resultados.Add(separator);
             }
-
-            return resultados;
         }
 
         private void SetBuscando(bool buscando)

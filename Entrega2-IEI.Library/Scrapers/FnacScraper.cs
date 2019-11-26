@@ -18,21 +18,16 @@ namespace Entrega2_IEI.Library.Scrapers
 
         public void GoToUrl(IWebDriver driver) => driver.Navigate().GoToUrl(Url);
 
-        public IList<Phone> SearchPhone(string brand, string model)
+        public IEnumerable<Phone> SearchPhone(string brand, string model)
         {
-            IList<Phone> phones;
             using (IWebDriver driver = ScraperUtils.SetupChromeDriver(Url))
             {
-                phones = SearchPhone(driver, brand, model);
+                return SearchPhone(driver, brand, model);
             }
-
-            return phones;
         }
 
-        public IList<Phone> SearchPhone(IWebDriver driver, string brand, string model)
+        public IEnumerable<Phone> SearchPhone(IWebDriver driver, string brand, string model)
         {
-            List<Phone> phones = new List<Phone>();
-
             Search(driver, $"Smartphone {brand} {model}");
 
             // TODO: Extraer datos de los resultados de busqueda
@@ -40,6 +35,7 @@ namespace Entrega2_IEI.Library.Scrapers
 
             foreach (IWebElement articleItem in articleItemList)
             {
+                Phone phone = null;
                 try
                 {
                     IWebElement descriptionElement = articleItem.FindElement(By.CssSelector(ArticleDescriptionCssSelector));
@@ -50,7 +46,7 @@ namespace Entrega2_IEI.Library.Scrapers
                         IWebElement priceElement = articleItem.FindElement(By.CssSelector(ArticlePriceCssSelector));
                         double price = ParsePrice(priceElement.Text, out string priceText, out string _);
 
-                        Phone phone = new Phone(brand, model, description, price);
+                        phone = new Phone(brand, model, description, price);
 
                         try
                         {
@@ -68,19 +64,17 @@ namespace Entrega2_IEI.Library.Scrapers
                         // Como en FNAC la descripción también contiene la marca y el modelo, mostramos sólo la descripción
                         phone.Description = description;
                         phone.NameFormat = PhoneNameFormat.Description;
-
-                        phones.Add(phone);
                     }
                 }
                 catch (NoSuchElementException ex)
                 {
                     Debug.WriteLine("Skipping article: " + ex.Message);
                 }
+
+                if (phone != null) yield return phone;
             }
 
             driver.Quit();
-
-            return phones;
         }
 
         private static double ParsePrice(string priceFullText, out string priceText, out string priceCurrency)
