@@ -76,6 +76,18 @@ namespace Entrega2_IEI
 
         private void Buscar(string brand, string model, IEnumerable<IPhoneScraper> scrapers, IList<object> resultados)
         {
+            #region Local methods called from main thread
+            void AddToResultados(object item)
+            {
+                Dispatcher.Invoke(() => resultados.Add(item));
+            }
+
+            void InsertInResultados(int index, object item)
+            {
+                Dispatcher.Invoke(() => resultados.Insert(index, item));
+            } 
+            #endregion
+
             foreach (IPhoneScraper scraper in scrapers)
             {
                 // Chapuza hasta poder hacerlo de una forma mejor
@@ -83,21 +95,21 @@ namespace Entrega2_IEI
                 string webPageName = scraper.GetType().Name;
                 webPageName = webPageName.Remove(webPageName.Length - "Scraper".Length);
 
-                resultados.Add($"--------- {webPageName} ----------");
+                AddToResultados($"--------- {webPageName} ----------");
 
                 foreach (Phone phone in scraper.SearchPhone(brand, model))
                 {
-                    resultados.Add(phone);
+                    AddToResultados(phone);
                 }
             }
 
             if (resultados.Count > 0)
             {
                 const string separator = "---------------------------------------------";
-                resultados.Insert(0, separator);
-                resultados.Insert(0, "Resultados de la búsqueda:");
+                InsertInResultados(0, separator);
+                InsertInResultados(0, "Resultados de la búsqueda:");
 
-                resultados.Add(separator);
+                AddToResultados(separator);
             }
         }
 
