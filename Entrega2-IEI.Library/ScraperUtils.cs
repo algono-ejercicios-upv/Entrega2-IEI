@@ -9,7 +9,7 @@ namespace Entrega2_IEI.Library
     {
         public static string Currency => CultureInfo.CurrentCulture.NumberFormat.CurrencySymbol;
 
-        private static readonly string[] filter = new[] { "Patrocinado", "Protector", "Silicona", "Funda", "Batería" };
+        private static readonly string[] filter = new[] { "Patrocinado", "Protector", "Silicona", "Funda", "Batería", "Carcasa" };
 
         /// <summary>
         /// Check if it's a recommended product or isn't a smartphone
