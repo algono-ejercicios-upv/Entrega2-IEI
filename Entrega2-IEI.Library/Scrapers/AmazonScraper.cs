@@ -7,29 +7,16 @@ namespace Entrega2_IEI.Library.Scrapers
     /// <summary>
     /// Author: Ignacio Ferrer
     /// </summary>
-    public class AmazonScraper : IPhoneScraper
+    public class AmazonScraper : PhoneScraper
     {
-        public const string Url = "https://www.amazon.es/";
+        public const string AmazonUrl = "https://www.amazon.es/";
+
+        public override string Url => AmazonUrl;
 
         private const string PriceClassName = "a-price-whole", PriceWithoutDiscountClassName = "a-text-price";
 
-        public void GoToUrl(IWebDriver driver) => driver.Navigate().GoToUrl(Url);
-
-        public IList<Phone> SearchPhone(string brand, string model)
+        public override IEnumerable<Phone> SearchPhone(IWebDriver driver, string brand, string model)
         {
-            IList<Phone> phones;
-            using (IWebDriver driver = ScraperUtils.SetupChromeDriver(Url))
-            {
-                phones = SearchPhone(driver, brand, model);
-            }
-
-            return phones;
-        }
-
-        public IList<Phone> SearchPhone(IWebDriver driver, string brand, string model)
-        {
-            List<Phone> phones = new List<Phone>();
-
             IWebElement searchBox = driver.FindElement(By.Id("twotabsearchtextbox"));
 
             searchBox.SendKeys("smartphone " + brand + " " + model);
@@ -43,6 +30,7 @@ namespace Entrega2_IEI.Library.Scrapers
 
             foreach (IWebElement element in elementList)
             {
+                Phone phone = null;
                 try
                 {
                     string description = element.FindElement(By.XPath(".//descendant::h2")).Text;
@@ -57,7 +45,7 @@ namespace Entrega2_IEI.Library.Scrapers
 
                         double price = ScraperUtils.ParseSpanishCulture(priceText);
 
-                        Phone phone = new Phone(brand, model, description, price);
+                        phone = new Phone(brand, model, description, price);
 
                         Debug.WriteLine("--------------------------");
                         Debug.WriteLine(description);
@@ -82,18 +70,17 @@ namespace Entrega2_IEI.Library.Scrapers
                         }
 
                         Debug.WriteLine("--------------------------");
-                        phones.Add(phone);
                     }
                 }
                 catch (NoSuchElementException ex)
                 {
                     Debug.WriteLine("Skipping article: " + ex.Message);
                 }
+
+                if (phone != null) yield return phone;
             }
 
             driver.Quit();
-
-            return phones;
         }
     }
 }

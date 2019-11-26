@@ -3,6 +3,7 @@ using Entrega2_IEI.Library.Scrapers;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Globalization;
 using System.Threading.Tasks;
 using System.Windows;
@@ -25,24 +26,24 @@ namespace Entrega2_IEI
         {
             SetBuscando(true);
 
-            IList resultados = null;
+            IList<object> resultados = new BindingList<object>();
             string brand = MarcaBox.Text, model = ModeloBox.Text;
 
-            IList<IPhoneScraper> scrapers = ObtenerScrapers();
+            IList<PhoneScraper> scrapers = ObtenerScrapers();
+
+            BusquedaListBox.ItemsSource = resultados;
 
             await Task.Run(() =>
             {
-                resultados = Buscar(brand, model, scrapers);
+                Buscar(brand, model, scrapers, resultados);
             });
-
-            BusquedaListBox.ItemsSource = resultados;
 
             SetBuscando(false);
         }
 
-        private IList<IPhoneScraper> ObtenerScrapers()
+        private IList<PhoneScraper> ObtenerScrapers()
         {
-            IList<IPhoneScraper> scrapers = new List<IPhoneScraper>();
+            IList<PhoneScraper> scrapers = new List<PhoneScraper>();
 
             foreach (CheckBox box in ScraperBoxes.Children)
             {
@@ -50,16 +51,16 @@ namespace Entrega2_IEI
                 {
                     if (box.Tag is Type type)
                     {
-                        if (typeof(IPhoneScraper).IsAssignableFrom(type))
+                        if (typeof(PhoneScraper).IsAssignableFrom(type))
                         {
-                            IPhoneScraper scraper = (IPhoneScraper)Activator.CreateInstance(box.Tag as Type);
+                            PhoneScraper scraper = (PhoneScraper)Activator.CreateInstance(box.Tag as Type);
                             scrapers.Add(scraper);
                         }
                         else
                         {
                             throw new ArgumentOutOfRangeException(
                                 $"El objeto de la {nameof(CheckBox)} con contenido '{box.Content}' tiene un valor de un {nameof(Type)} " +
-                                $"que no implementa la interfaz {nameof(IPhoneScraper)}.");
+                                $"que no implementa la interfaz {nameof(PhoneScraper)}.");
                         }
                     }
                     else
@@ -73,37 +74,43 @@ namespace Entrega2_IEI
             return scrapers;
         }
 
-        private IList Buscar(string brand, string model, IEnumerable<IPhoneScraper> scrapers)
+        private void Buscar(string brand, string model, IEnumerable<PhoneScraper> scrapers, IList<object> resultados)
         {
-            IList resultados = new List<object>();
+            #region Local methods called from main thread
+            void AddToResultados(object item)
+            {
+                Dispatcher.Invoke(() => resultados.Add(item));
+            }
 
-            foreach (IPhoneScraper scraper in scrapers)
+            void InsertInResultados(int index, object item)
+            {
+                Dispatcher.Invoke(() => resultados.Insert(index, item));
+            } 
+            #endregion
+
+            foreach (PhoneScraper scraper in scrapers)
             {
                 // Chapuza hasta poder hacerlo de una forma mejor
                 // TODO: Mejorar esto
                 string webPageName = scraper.GetType().Name;
                 webPageName = webPageName.Remove(webPageName.Length - "Scraper".Length);
 
-                resultados.Add($"--------- {webPageName} ----------");
+                AddToResultados($"--------- {webPageName} ----------");
 
-                IList<Phone> phones = scraper.SearchPhone(brand, model);
-
-                foreach (Phone phone in phones)
+                foreach (Phone phone in scraper.SearchPhone(brand, model))
                 {
-                    resultados.Add(phone);
+                    AddToResultados(phone);
                 }
             }
 
             if (resultados.Count > 0)
             {
                 const string separator = "---------------------------------------------";
-                resultados.Insert(0, separator);
-                resultados.Insert(0, "Resultados de la búsqueda:");
+                InsertInResultados(0, separator);
+                InsertInResultados(0, "Resultados de la búsqueda:");
 
-                resultados.Add(separator);
+                AddToResultados(separator);
             }
-
-            return resultados;
         }
 
         private void SetBuscando(bool buscando)
