@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using OpenQA.Selenium.Support.UI;
 
 namespace Entrega2_IEI.Library.Scrapers
 {
@@ -11,14 +10,13 @@ namespace Entrega2_IEI.Library.Scrapers
     /// </summary>
     public class PCComponentesScraper : PhoneScraper
     {
-        public const string PCComponentesUrl = "https://www.pccomponentes.com/";
+        public string PCComponentesUrl = "https://www.pccomponentes.com/buscar/?query=";
 
         public override string Url => PCComponentesUrl;
 
         private const string
             SearchInputXPathSelector = "/html/body/header/div[3]/div[1]/div/div[2]/div/form/input",
-            ArticleItemXPathSelector = "/html/body/header/div[3]/div[2]/section/div[2]/div[2]/ol/li[1]",
-            ArticleOldPriceXPathSelector = "",
+            ArticleItemXPathSelector = "/html/body/div[1]/div[2]/div/div/div[2]/div[2]/div[3]/div[1]/div",
             SearchSmartphoneXPathSelector = "/html/body/header/div[3]/div[2]/aside/div[3]/div[2]/div/ul/li[1]";
 
 
@@ -29,17 +27,20 @@ namespace Entrega2_IEI.Library.Scrapers
         public override IEnumerable<Phone> SearchPhone(IWebDriver driver, string brand, string model)
         {
             int articleCounter = 1;
-            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(3));
+            driver.Url = "https://www.pccomponentes.com/buscar/?query=" + " " + brand + " " + model;
 
-            Search(driver, $"Smartphone {brand} {model} -funda");
+
+            //Search(driver, $"Smartphone {brand} {model} -funda");
 
             IReadOnlyCollection<IWebElement> articleList = GetArticleItemList(driver);
-            System.Threading.Thread.Sleep(3000);
+            Debug.WriteLine(articleList.Count);
 
+            System.Threading.Thread.Sleep(5000);
             foreach (IWebElement articleItem in articleList)
             {
-                string ArticlePriceXPathSelector = "/html/body/header/div[3]/div[2]/section/div[2]/div[2]/ol/li[" + articleCounter + "]/div/div/div[3]";
-                string ArticleDescriptionXPathSelector = "/html/body/header/div[3]/div[2]/section/div[2]/div[2]/ol/li[" + articleCounter + "]/div/div/div[1]";
+                string ArticlePriceXPathSelector = "/html/body/div[1]/div[2]/div/div/div[2]/div[2]/div[3]/div[1]/div["+articleCounter+"]/article/div[1]/div[2]/div";
+                string ArticleDescriptionXPathSelector = "/html/body/div[1]/div[2]/div/div/div[2]/div[2]/div[3]/div[1]/div["+articleCounter+"]/article/div[1]/header/h3/a";
+                string ArticleOldPriceXPathSelector = "/html/body/div[1]/div[2]/div/div/div[2]/div[2]/div[3]/div[1]/div[" + articleCounter + "]/article/div[1]/div[2]/div[2]/div[1]";
 
 
                 Phone phone = null;
@@ -52,6 +53,7 @@ namespace Entrega2_IEI.Library.Scrapers
                     IWebElement descriptionElement = articleItem.FindElement(By.XPath(ArticleDescriptionXPathSelector));
                     string description = descriptionElement.FindElement(By.XPath(ArticleDescriptionXPathSelector)).Text;
                     Debug.WriteLine(description);
+                    articleCounter++;
 
                     if (ScraperUtils.IsArticleValid(description) && description.ContainsIgnoreCase(model)) {
                         IWebElement priceElement = articleItem.FindElement(By.XPath(ArticlePriceXPathSelector));
@@ -59,7 +61,7 @@ namespace Entrega2_IEI.Library.Scrapers
                         Debug.WriteLine(price);
                         phone = new Phone(brand, model, description, price);
 
-                        articleCounter++;
+                        
 
                         try {
 
@@ -87,7 +89,7 @@ namespace Entrega2_IEI.Library.Scrapers
 
         private static IReadOnlyCollection<IWebElement> GetArticleItemList(IWebDriver driver) => driver.FindElements(By.XPath(ArticleItemXPathSelector));
 
-        private static IReadOnlyCollection<IWebElement> GetButtonItemList(IWebDriver driver) => driver.FindElements(By.XPath(SearchSmartphoneXPathSelector));
+        //private static IReadOnlyCollection<IWebElement> GetButtonItemList(IWebDriver driver) => driver.FindElements(By.XPath(SearchSmartphoneXPathSelector));
 
         private static void Search(IWebDriver driver, string v)
         {
