@@ -117,6 +117,7 @@ namespace Entrega2_IEI
         private void SetBuscando(bool buscando)
         {
             BuscarButton.IsEnabled = !buscando;
+            ShowBrowserBox.IsEnabled = !buscando;
             BuscandoText.Visibility = buscando ? Visibility.Visible : Visibility.Hidden;
         }
     }
