@@ -9,16 +9,27 @@ namespace Entrega2_IEI.Library.Scrapers
 
         public void GoToUrl(IWebDriver driver) => driver.Navigate().GoToUrl(Url);
 
-        public virtual IEnumerable<Phone> SearchPhone(string brand, string model)
+        public IEnumerable<Phone> SearchPhone(string brand, string model)
         {
-            using (IWebDriver driver = ScraperUtils.SetupChromeDriver(Url))
+            bool done = false;
+            while (!done)
             {
-                foreach (Phone phone in SearchPhone(driver, brand, model))
+                using (IWebDriver driver = ScraperUtils.SetupChromeDriver(true, Url))
                 {
-                    yield return phone;
+                    if (CheckPreconditions(driver))
+                    {
+                        foreach (Phone phone in SearchPhone(driver, brand, model))
+                        {
+                            yield return phone;
+                        }
+
+                        done = true;
+                    }
                 }
             }
         }
+
+        protected virtual bool CheckPreconditions(IWebDriver driver) => true;
 
         /// <summary>
         /// Esta versión NO te lleva a la url de la web, lo tienes que hacer mediante <see cref="GoToUrl(IWebDriver)"/> antes, o no funcionará.
