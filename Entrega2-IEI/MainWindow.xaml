@@ -49,6 +49,8 @@
                         <RowDefinition Height="20" />
                         <RowDefinition Height="auto" />
                         <RowDefinition Height="20" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="20" />
                     </Grid.RowDefinitions>
 
                     <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center">
@@ -81,6 +83,8 @@
                         <Button x:Name="BuscarButton" HorizontalAlignment="Left" MinWidth="50" VerticalAlignment="Center" Content="Buscar" Click="BuscarButton_Click" />
                         <TextBlock x:Name="BuscandoText" Text="Buscando..." Foreground="Gray" Margin="10 0 0 0" Visibility="Hidden" />
                     </StackPanel>
+
+                    <CheckBox x:Name="ShowBrowserBox" Grid.Column="1" Grid.Row="9" IsChecked="True" Content="Mostrar navegador" />
                 </Grid>
 
                 <ListBox x:Name="BusquedaListBox" Grid.Column="2" />

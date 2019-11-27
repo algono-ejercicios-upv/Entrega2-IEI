@@ -18,9 +18,12 @@ namespace Entrega2_IEI.Library
         /// <returns></returns>
         public static bool IsArticleValid(string s) => !filter.Any(x => s.ContainsIgnoreCase(x));
 
-        public static ChromeDriver SetupChromeDriver(string startUrl = default)
+        public static ChromeDriver SetupChromeDriver(bool show = true, string startUrl = default)
         {
-            ChromeDriver driver = new ChromeDriver();
+            ChromeOptions options = new ChromeOptions();
+            if (!show) options.AddArgument("headless");
+
+            ChromeDriver driver = new ChromeDriver(options);
 
             driver.Manage().Window.Maximize();
             driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(2);

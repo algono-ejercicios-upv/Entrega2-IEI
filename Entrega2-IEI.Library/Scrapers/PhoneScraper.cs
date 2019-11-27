@@ -7,6 +7,8 @@ namespace Entrega2_IEI.Library.Scrapers
     {
         public abstract string Url { get; }
 
+        public bool ShowBrowser { get; set; } = true;
+
         public void GoToUrl(IWebDriver driver) => driver.Navigate().GoToUrl(Url);
 
         public IEnumerable<Phone> SearchPhone(string brand, string model)
@@ -14,7 +16,7 @@ namespace Entrega2_IEI.Library.Scrapers
             bool done = false;
             while (!done)
             {
-                using (IWebDriver driver = ScraperUtils.SetupChromeDriver(Url))
+                using (IWebDriver driver = ScraperUtils.SetupChromeDriver(ShowBrowser, Url))
                 {
                     if (CheckPreconditions(driver))
                     {
