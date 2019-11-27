@@ -82,11 +82,6 @@ namespace Entrega2_IEI
             {
                 Dispatcher.Invoke(() => resultados.Add(item));
             }
-
-            void InsertInResultados(int index, object item)
-            {
-                Dispatcher.Invoke(() => resultados.Insert(index, item));
-            } 
             #endregion
 
             foreach (PhoneScraper scraper in scrapers)
@@ -102,15 +97,6 @@ namespace Entrega2_IEI
                 {
                     AddToResultados(phone);
                 }
-            }
-
-            if (resultados.Count > 0)
-            {
-                const string separator = "---------------------------------------------";
-                InsertInResultados(0, separator);
-                InsertInResultados(0, "Resultados de la búsqueda:");
-
-                AddToResultados(separator);
             }
         }
 
