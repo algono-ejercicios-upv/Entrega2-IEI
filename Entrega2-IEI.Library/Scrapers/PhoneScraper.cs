@@ -14,7 +14,7 @@ namespace Entrega2_IEI.Library.Scrapers
             bool done = false;
             while (!done)
             {
-                using (IWebDriver driver = ScraperUtils.SetupChromeDriver(true, Url))
+                using (IWebDriver driver = ScraperUtils.SetupChromeDriver(Url))
                 {
                     if (CheckPreconditions(driver))
                     {
