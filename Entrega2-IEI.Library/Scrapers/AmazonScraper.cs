@@ -15,6 +15,33 @@ namespace Entrega2_IEI.Library.Scrapers
 
         private const string PriceClassName = "a-price-whole", PriceWithoutDiscountClassName = "a-text-price";
 
+        public override IEnumerable<Phone> SearchPhone(string brand, string model)
+        {
+            bool done = false;
+            while (!done)
+            {
+                using (IWebDriver driver = ScraperUtils.SetupChromeDriver(Url))
+                {
+                    if (!driver.Title.ContainsIgnoreCase("captcha"))
+                    {
+                        foreach (Phone phone in SearchPhone(driver, brand, model))
+                        {
+                            yield return phone;
+                        }
+
+                        done = true;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Este método NO comprueba que la web no sea la del CAPTCHA. Si lo fuera, soltaría una <see cref="NoSuchElementException"/>.
+        /// </summary>
+        /// <param name="driver"></param>
+        /// <param name="brand"></param>
+        /// <param name="model"></param>
+        /// <returns></returns>
         public override IEnumerable<Phone> SearchPhone(IWebDriver driver, string brand, string model)
         {
             IWebElement searchBox = driver.FindElement(By.Id("twotabsearchtextbox"));

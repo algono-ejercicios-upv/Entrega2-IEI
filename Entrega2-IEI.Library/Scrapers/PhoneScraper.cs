@@ -9,7 +9,7 @@ namespace Entrega2_IEI.Library.Scrapers
 
         public void GoToUrl(IWebDriver driver) => driver.Navigate().GoToUrl(Url);
 
-        public IEnumerable<Phone> SearchPhone(string brand, string model)
+        public virtual IEnumerable<Phone> SearchPhone(string brand, string model)
         {
             using (IWebDriver driver = ScraperUtils.SetupChromeDriver(Url))
             {
