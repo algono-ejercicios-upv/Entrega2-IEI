@@ -29,19 +29,19 @@ namespace Entrega2_IEI
             IList<object> resultados = new BindingList<object>();
             string brand = MarcaBox.Text, model = ModeloBox.Text;
 
-            IList<PhoneScraper> scrapers = ObtenerScrapers();
+            IList<PhoneScraper> scrapers = ObtenerScrapers(brand, model);
 
             BusquedaListBox.ItemsSource = resultados;
 
             await Task.Run(() =>
             {
-                Buscar(brand, model, scrapers, resultados);
+                Buscar(scrapers, resultados);
             });
 
             SetBuscando(false);
         }
 
-        private IList<PhoneScraper> ObtenerScrapers()
+        private IList<PhoneScraper> ObtenerScrapers(string brand, string model)
         {
             IList<PhoneScraper> scrapers = new List<PhoneScraper>();
 
@@ -53,8 +53,8 @@ namespace Entrega2_IEI
                     {
                         if (typeof(PhoneScraper).IsAssignableFrom(type))
                         {
-                            PhoneScraper scraper = (PhoneScraper)Activator.CreateInstance(box.Tag as Type);
-                            scraper.ShowBrowser = ShowBrowserBox.IsChecked ?? false;
+                            bool showBrowser = ShowBrowserBox.IsChecked ?? false;
+                            PhoneScraper scraper = (PhoneScraper)Activator.CreateInstance(box.Tag as Type, brand, model, showBrowser);
                             scrapers.Add(scraper);
                         }
                         else
@@ -75,7 +75,7 @@ namespace Entrega2_IEI
             return scrapers;
         }
 
-        private void Buscar(string brand, string model, IEnumerable<PhoneScraper> scrapers, IList<object> resultados)
+        private void Buscar(IEnumerable<PhoneScraper> scrapers, IList<object> resultados)
         {
             #region Local methods called from main thread
             void AddToResultados(object item)
@@ -93,7 +93,7 @@ namespace Entrega2_IEI
 
                 AddToResultados($"--------- {webPageName} ----------");
 
-                foreach (Phone phone in scraper.SearchPhone(brand, model))
+                foreach (Phone phone in scraper.SearchPhone())
                 {
                     AddToResultados(phone);
                 }

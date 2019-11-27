@@ -15,6 +15,11 @@ namespace Entrega2_IEI.Library.Scrapers
 
         private const string PriceClassName = "a-price-whole", PriceWithoutDiscountClassName = "a-text-price";
 
+        public AmazonScraper(string brand, string model, bool showBrowser = true) : base(brand, model, showBrowser)
+        {
+
+        }
+
         protected override bool CheckPreconditions(IWebDriver driver)
             => base.CheckPreconditions(driver) && !driver.Title.ContainsIgnoreCase("captcha");
 
@@ -25,11 +30,11 @@ namespace Entrega2_IEI.Library.Scrapers
         /// <param name="brand"></param>
         /// <param name="model"></param>
         /// <returns></returns>
-        public override IEnumerable<Phone> SearchPhone(IWebDriver driver, string brand, string model)
+        public override IEnumerable<Phone> SearchPhone(IWebDriver driver)
         {
             IWebElement searchBox = driver.FindElement(By.Id("twotabsearchtextbox"));
 
-            searchBox.SendKeys("smartphone " + brand + " " + model);
+            searchBox.SendKeys("smartphone " + Brand + " " + Model);
 
             driver.FindElement(By.ClassName("nav-input")).Click();
 
@@ -45,7 +50,7 @@ namespace Entrega2_IEI.Library.Scrapers
                 {
                     string description = element.FindElement(By.XPath(".//descendant::h2")).Text;
                     // Filter of Patrocinados and product's name
-                    if (ScraperUtils.IsArticleValid(element.Text) && description.ContainsIgnoreCase(model))
+                    if (ScraperUtils.IsArticleValid(element.Text) && description.ContainsIgnoreCase(Model))
                     {
                         IWebElement priceElement = element.FindElement(By.ClassName(PriceClassName));
 
@@ -55,7 +60,7 @@ namespace Entrega2_IEI.Library.Scrapers
 
                         double price = ScraperUtils.ParseSpanishCulture(priceText);
 
-                        phone = new Phone(brand, model, description, price);
+                        phone = new Phone(Brand, Model, description, price);
 
                         Debug.WriteLine("--------------------------");
                         Debug.WriteLine(description);

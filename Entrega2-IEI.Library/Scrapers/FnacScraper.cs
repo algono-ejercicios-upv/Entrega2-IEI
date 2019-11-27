@@ -18,9 +18,14 @@ namespace Entrega2_IEI.Library.Scrapers
             ArticleItemCssSelector = ".Article-item", ArticleDescriptionCssSelector = ".Article-desc",
             ArticleOldPriceCssSelector = ".oldPrice", ArticlePriceCssSelector = ".userPrice";
 
-        public override IEnumerable<Phone> SearchPhone(IWebDriver driver, string brand, string model)
+        public FnacScraper(string brand, string model, bool showBrowser = true) : base(brand, model, showBrowser)
         {
-            Search(driver, $"Smartphone {brand} {model}");
+
+        }
+
+        public override IEnumerable<Phone> SearchPhone(IWebDriver driver)
+        {
+            Search(driver, $"Smartphone {Brand} {Model}");
 
             // TODO: Extraer datos de los resultados de busqueda
             IReadOnlyCollection<IWebElement> articleItemList = GetArticleItemList(driver);
@@ -33,12 +38,12 @@ namespace Entrega2_IEI.Library.Scrapers
                     IWebElement descriptionElement = articleItem.FindElement(By.CssSelector(ArticleDescriptionCssSelector));
                     string description = descriptionElement.FindElement(By.XPath(".//descendant::a")).Text;
 
-                    if (ScraperUtils.IsArticleValid(description) && description.ContainsIgnoreCase(model))
+                    if (ScraperUtils.IsArticleValid(description) && description.ContainsIgnoreCase(Model))
                     {
                         IWebElement priceElement = articleItem.FindElement(By.CssSelector(ArticlePriceCssSelector));
                         double price = ParsePrice(priceElement.Text, out string priceText, out string _);
 
-                        phone = new Phone(brand, model, description, price);
+                        phone = new Phone(Brand, Model, description, price);
 
                         try
                         {
@@ -53,7 +58,7 @@ namespace Entrega2_IEI.Library.Scrapers
                             Debug.WriteLine("No discount: " + ex.Message);
                         }
 
-                        // Como en FNAC la descripción también contiene la marca y el modelo, mostramos sólo la descripción
+                        // Como en FNAC la descripción también contiene la marca y el Modelo, mostramos sólo la descripción
                         phone.Description = description;
                         phone.NameFormat = PhoneNameFormat.Description;
                     }
