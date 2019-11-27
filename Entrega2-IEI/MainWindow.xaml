@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Entrega2_IEI"
         xmlns:scrapers="clr-namespace:Entrega2_IEI.Library.Scrapers;assembly=Entrega2-IEI.Library"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Entrega 2 IEI - Búsqueda de móviles" Height="450" Width="800">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="20" />
