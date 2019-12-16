@@ -13,14 +13,14 @@ namespace Entrega2_IEI.Library.Scrapers
 
         public ScraperConfig Config { get; set; }
 
-        protected PhoneScraper(string brand, string model, bool showBrowser = true)
+        protected PhoneScraper(string brand, string model)
         {
             Brand = brand;
             Model = model;
 
             Config = new ScraperConfig()
             {
-                ShowBrowser = showBrowser
+                ShowBrowser = true
             };
         }
 

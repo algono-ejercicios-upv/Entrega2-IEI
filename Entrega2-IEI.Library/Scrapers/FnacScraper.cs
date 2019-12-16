@@ -18,7 +18,7 @@ namespace Entrega2_IEI.Library.Scrapers
             ArticleItemCssSelector = ".Article-item", ArticleDescriptionCssSelector = ".Article-desc",
             ArticleOldPriceCssSelector = ".oldPrice", ArticlePriceCssSelector = ".userPrice";
 
-        public FnacScraper(string brand, string model, bool showBrowser = true) : base(brand, model, showBrowser)
+        public FnacScraper(string brand, string model) : base(brand, model)
         {
 
         }

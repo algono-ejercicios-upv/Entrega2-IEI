@@ -1,4 +1,5 @@
-﻿using OpenQA.Selenium.Chrome;
+﻿using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
 using System;
 using System.Globalization;
 using System.Linq;
@@ -20,7 +21,7 @@ namespace Entrega2_IEI.Library
         /// <returns></returns>
         public bool IsArticleValid(string s) => !filter.Any(x => s.ContainsIgnoreCase(x));
 
-        public ChromeDriver SetupChromeDriver(string startUrl = default)
+        public virtual IWebDriver SetupChromeDriver(string startUrl = default)
         {
             ChromeOptions options = new ChromeOptions();
             if (!ShowBrowser) options.AddArgument("headless");
