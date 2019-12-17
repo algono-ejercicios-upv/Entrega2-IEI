@@ -12,14 +12,6 @@ namespace Entrega2_IEI.Test
     [TestClass]
     public class AmazonScraperTests
     {
-        private struct ContadorCaptcha
-        {
-            public int maximo;
-            public int actual;
-            public bool Seguir => actual < maximo;
-            public void Incrementar() => actual++;
-        }
-
         /// <summary>
         /// En <see cref="AmazonScraper"/>, si aparece la pagina del Captcha, debe crear un nuevo <see cref="IWebDriver"/> hasta que deje de aparecer 
         /// </summary>
@@ -34,26 +26,25 @@ namespace Entrega2_IEI.Test
             var scraperConfig = new Mock<ScraperConfig>();
             var driver = new Mock<IWebDriver>();
 
-            // Necesitamos un contador como objeto para evitar que se pierda el contador entre las lambdas
-            ContadorCaptcha contadorCaptcha = new ContadorCaptcha
-            {
-                // Su maximo es el numero de veces que debe salir el captcha
-                // Hacemos un numero aleatorio entre 1 y 5 para probar varios casos
-                maximo = new Random().Next(1, 5),
+            // Hacemos un numero aleatorio entre 1 y 5 para probar varios casos
+            int vecesQueVaASalirElCaptcha = new Random().Next(1, 5);
 
-                // El valor actual es el contador real en el test
-                actual = 0
-            };
+            int vecesQueHaSalidoElCaptcha = 0;
 
             // Cuando intente hacer algo con el driver, debe terminar
             driver.Setup(driver => driver.FindElement(It.IsAny<By>())).Throws<ScrapingCorrectoException>();
 
             Expression<Func<IWebDriver, string>> tituloDriverExpression = driver => driver.Title;
             // El titulo devolverá el captcha mientras que el contador no llegue a su máximo. Por cada llamada, aumenta el contador en 1
-            driver.When(() => contadorCaptcha.Seguir).SetupGet(tituloDriverExpression).Returns("Amazon CAPTCHA").Callback(() => contadorCaptcha.Incrementar());
-            
+            driver.When(() => vecesQueHaSalidoElCaptcha < vecesQueVaASalirElCaptcha)
+                .SetupGet(tituloDriverExpression)
+                .Returns("Amazon CAPTCHA")
+                .Callback(() => vecesQueHaSalidoElCaptcha++);
+
             // Cuando ya hemos mostrado el captcha las veces indicadas, devuelve un titulo válido
-            driver.When(() => !contadorCaptcha.Seguir).SetupGet(tituloDriverExpression).Returns("Amazon");
+            driver.When(() => vecesQueHaSalidoElCaptcha >= vecesQueVaASalirElCaptcha)
+                .SetupGet(tituloDriverExpression)
+                .Returns("Amazon");
 
             // Guardamos la expresión asociada a crear un nuevo driver
             Expression<Func<ScraperConfig, IWebDriver>> setupChromeDriverExpression = scraperConfig => scraperConfig.SetupChromeDriver(It.IsAny<string>());
@@ -85,7 +76,7 @@ namespace Entrega2_IEI.Test
             #region Assert
             // Comprobamos que se ha llamado a crear un nuevo driver exactamente el número de veces que sale el captcha
             // (y una más que sería la correcta).
-            scraperConfig.Verify(setupChromeDriverExpression, Times.Exactly(contadorCaptcha.maximo + 1), failMessage: "El driver no se ha recargado las veces que tocaba"); 
+            scraperConfig.Verify(setupChromeDriverExpression, Times.Exactly(vecesQueVaASalirElCaptcha + 1), failMessage: "El driver no se ha recargado las veces que tocaba");
             #endregion
         }
     }
