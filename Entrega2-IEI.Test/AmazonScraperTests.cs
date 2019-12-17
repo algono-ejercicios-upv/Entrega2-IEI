@@ -48,8 +48,12 @@ namespace Entrega2_IEI.Test
             // Cuando intente hacer algo con el driver, debe terminar
             driver.Setup(driver => driver.FindElement(It.IsAny<By>())).Throws<ScrapingCorrectoException>();
 
+            Expression<Func<IWebDriver, string>> tituloDriverExpression = driver => driver.Title;
             // El titulo devolverá el captcha mientras que el contador no llegue a su máximo. Por cada llamada, aumenta el contador en 1
-            driver.Setup(driver => driver.Title).Returns(delegate { return contadorCaptcha.Seguir ? "Amazon CAPTCHA" : "Amazon"; }).Callback(() => contadorCaptcha.Incrementar());
+            driver.When(() => contadorCaptcha.Seguir).SetupGet(tituloDriverExpression).Returns("Amazon CAPTCHA").Callback(() => contadorCaptcha.Incrementar());
+            
+            // Cuando ya hemos mostrado el captcha las veces indicadas, devuelve un titulo válido
+            driver.When(() => !contadorCaptcha.Seguir).SetupGet(tituloDriverExpression).Returns("Amazon");
 
             // Guardamos la expresión asociada a crear un nuevo driver
             Expression<Func<ScraperConfig, IWebDriver>> setupChromeDriverExpression = scraperConfig => scraperConfig.SetupChromeDriver(It.IsAny<string>());
