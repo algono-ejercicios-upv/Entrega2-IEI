@@ -34,7 +34,9 @@ namespace Entrega2_IEI.Test
             // Cuando intente hacer algo con el driver, debe terminar
             driver.Setup(driver => driver.FindElement(It.IsAny<By>())).Throws<ScrapingCorrectoException>();
 
+            // Guardamos la expresión asociada a obtener el titulo de la web
             Expression<Func<IWebDriver, string>> tituloDriverExpression = driver => driver.Title;
+
             // El titulo devolverá el captcha mientras que el contador no llegue a su máximo. Por cada llamada, aumenta el contador en 1
             driver.When(() => vecesQueHaSalidoElCaptcha < vecesQueVaASalirElCaptcha)
                 .SetupGet(tituloDriverExpression)
