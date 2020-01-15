@@ -5,7 +5,9 @@ VisualStudioVersion = 16.0.29409.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Entrega2-IEI", "Entrega2-IEI\Entrega2-IEI.csproj", "{DD20D01D-FB8C-4805-82AC-98216844180A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Entrega2-IEI.Library", "Entrega2-IEI.Library\Entrega2-IEI.Library.csproj", "{75CCC10E-13D5-42D2-9B74-C1405A5E07E3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Entrega2-IEI.Library", "Entrega2-IEI.Library\Entrega2-IEI.Library.csproj", "{75CCC10E-13D5-42D2-9B74-C1405A5E07E3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Entrega2-IEI.Test", "Entrega2-IEI.Test\Entrega2-IEI.Test.csproj", "{69C3D336-AA01-47E7-BB3A-B0629ACDE418}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{75CCC10E-13D5-42D2-9B74-C1405A5E07E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{75CCC10E-13D5-42D2-9B74-C1405A5E07E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{75CCC10E-13D5-42D2-9B74-C1405A5E07E3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{69C3D336-AA01-47E7-BB3A-B0629ACDE418}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{69C3D336-AA01-47E7-BB3A-B0629ACDE418}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{69C3D336-AA01-47E7-BB3A-B0629ACDE418}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{69C3D336-AA01-47E7-BB3A-B0629ACDE418}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

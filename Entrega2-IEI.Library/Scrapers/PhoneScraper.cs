@@ -11,13 +11,17 @@ namespace Entrega2_IEI.Library.Scrapers
 
         public string Model { get; }
 
-        public bool ShowBrowser { get; set; }
+        public ScraperConfig Config { get; set; }
 
-        protected PhoneScraper(string brand, string model, bool showBrowser = true)
+        protected PhoneScraper(string brand, string model)
         {
             Brand = brand;
             Model = model;
-            ShowBrowser = showBrowser;
+
+            Config = new ScraperConfig()
+            {
+                ShowBrowser = true
+            };
         }
 
         public void GoToUrl(IWebDriver driver) => driver.Navigate().GoToUrl(Url);
@@ -27,7 +31,7 @@ namespace Entrega2_IEI.Library.Scrapers
             bool done = false;
             while (!done)
             {
-                using (IWebDriver driver = ScraperUtils.SetupChromeDriver(ShowBrowser, Url))
+                using (IWebDriver driver = Config.SetupChromeDriver(Url))
                 {
                     if (CheckPreconditions(driver))
                     {

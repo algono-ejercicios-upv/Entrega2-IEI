@@ -17,7 +17,7 @@ namespace Entrega2_IEI.Library.Scrapers
 
         private const string ArticleItemXPathSelector = "/html/body/div[1]/div[2]/div/div/div[2]/div[2]/div[3]/div[1]/div";
 
-        public PCComponentesScraper(string brand, string model, bool showBrowser = true) : base(brand, model, showBrowser)
+        public PCComponentesScraper(string brand, string model) : base(brand, model)
         {
 
         }
@@ -59,7 +59,7 @@ namespace Entrega2_IEI.Library.Scrapers
                     Debug.WriteLine(description);
                     articleCounter++;
 
-                    if (ScraperUtils.IsArticleValid(description) && description.ContainsIgnoreCase(Model))
+                    if (Config.IsArticleValid(description) && description.ContainsIgnoreCase(Model))
                     {
                         IWebElement priceElement = articleItem.FindElement(By.XPath(ArticlePriceXPathSelector));
                         double price = ParsePrice(priceElement.Text, out string priceText, out string _);
@@ -93,11 +93,11 @@ namespace Entrega2_IEI.Library.Scrapers
 
         private static IReadOnlyCollection<IWebElement> GetArticleItemList(IWebDriver driver) => driver.FindElements(By.XPath(ArticleItemXPathSelector));
 
-        private static double ParsePrice(string text, out string priceText, out string priceCurrency)
+        private double ParsePrice(string text, out string priceText, out string priceCurrency)
         {
             priceText = text.Remove(text.Length - 1);
             priceCurrency = text.Substring(text.Length - 1, 1);
-            double price = ScraperUtils.ParseSpanishCulture(priceText);
+            double price = Config.ParseSpanishCulture(priceText);
             return price;
         }
     }

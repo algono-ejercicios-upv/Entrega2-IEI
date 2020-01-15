@@ -18,7 +18,7 @@ namespace Entrega2_IEI.Library.Scrapers
             ArticleItemCssSelector = ".Article-item", ArticleDescriptionCssSelector = ".Article-desc",
             ArticleOldPriceCssSelector = ".oldPrice", ArticlePriceCssSelector = ".userPrice";
 
-        public FnacScraper(string brand, string model, bool showBrowser = true) : base(brand, model, showBrowser)
+        public FnacScraper(string brand, string model) : base(brand, model)
         {
 
         }
@@ -38,7 +38,7 @@ namespace Entrega2_IEI.Library.Scrapers
                     IWebElement descriptionElement = articleItem.FindElement(By.CssSelector(ArticleDescriptionCssSelector));
                     string description = descriptionElement.FindElement(By.XPath(".//descendant::a")).Text;
 
-                    if (ScraperUtils.IsArticleValid(description) && description.ContainsIgnoreCase(Model))
+                    if (Config.IsArticleValid(description) && description.ContainsIgnoreCase(Model))
                     {
                         IWebElement priceElement = articleItem.FindElement(By.CssSelector(ArticlePriceCssSelector));
                         double price = ParsePrice(priceElement.Text, out string priceText, out string _);
@@ -74,11 +74,11 @@ namespace Entrega2_IEI.Library.Scrapers
             driver.Quit();
         }
 
-        private static double ParsePrice(string priceFullText, out string priceText, out string priceCurrency)
+        private double ParsePrice(string priceFullText, out string priceText, out string priceCurrency)
         {
             priceText = priceFullText.Remove(priceFullText.Length - 1);
             priceCurrency = priceFullText.Substring(priceFullText.Length - 1, 1);
-            double price = ScraperUtils.ParseSpanishCulture(priceText);
+            double price = Config.ParseSpanishCulture(priceText);
             return price;
         }
 

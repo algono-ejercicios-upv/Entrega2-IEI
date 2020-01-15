@@ -15,7 +15,7 @@ namespace Entrega2_IEI.Library.Scrapers
 
         private const string PriceClassName = "a-price-whole", PriceWithoutDiscountClassName = "a-text-price";
 
-        public AmazonScraper(string brand, string model, bool showBrowser = true) : base(brand, model, showBrowser)
+        public AmazonScraper(string brand, string model) : base(brand, model)
         {
 
         }
@@ -50,7 +50,7 @@ namespace Entrega2_IEI.Library.Scrapers
                 {
                     string description = element.FindElement(By.XPath(".//descendant::h2")).Text;
                     // Filter of Patrocinados and product's name
-                    if (ScraperUtils.IsArticleValid(element.Text) && description.ContainsIgnoreCase(Model))
+                    if (Config.IsArticleValid(element.Text) && description.ContainsIgnoreCase(Model))
                     {
                         IWebElement priceElement = element.FindElement(By.ClassName(PriceClassName));
 
@@ -58,7 +58,7 @@ namespace Entrega2_IEI.Library.Scrapers
 
                         priceText = priceText.Remove(priceText.Length - 1);
 
-                        double price = ScraperUtils.ParseSpanishCulture(priceText);
+                        double price = Config.ParseSpanishCulture(priceText);
 
                         phone = new Phone(Brand, Model, description, price);
 
@@ -75,7 +75,7 @@ namespace Entrega2_IEI.Library.Scrapers
 
                             priceWithoutDiscountText = priceWithoutDiscountText.Remove(priceWithoutDiscountText.Length - 1);
 
-                            double priceWithoutDiscount = ScraperUtils.ParseSpanishCulture(priceWithoutDiscountText);
+                            double priceWithoutDiscount = Config.ParseSpanishCulture(priceWithoutDiscountText);
 
                             phone.Discount = priceWithoutDiscount - price;
                         }

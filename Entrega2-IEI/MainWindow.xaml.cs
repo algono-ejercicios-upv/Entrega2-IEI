@@ -54,7 +54,8 @@ namespace Entrega2_IEI
                         if (typeof(PhoneScraper).IsAssignableFrom(type))
                         {
                             bool showBrowser = ShowBrowserBox.IsChecked ?? false;
-                            PhoneScraper scraper = (PhoneScraper)Activator.CreateInstance(box.Tag as Type, brand, model, showBrowser);
+                            PhoneScraper scraper = (PhoneScraper)Activator.CreateInstance(box.Tag as Type, brand, model);
+                            scraper.Config.ShowBrowser = showBrowser;
                             scrapers.Add(scraper);
                         }
                         else
